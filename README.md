@@ -1,32 +1,57 @@
-# Ceromancia CV — Análisis simbólico de velas
+# SSSTudio — SaaS Platform
 
-Aplicación demo: backend (FastAPI + TensorFlow) e interfaz web para subir fotos de velas y recibir una interpretación basada en patrones visuales heurísticos y un modelo de clasificación ligero.
+React (Vite) + Node (Express) + PostgreSQL (Neon) + Firebase Auth.
 
-## Requisitos
+## Deploy en cuenta nueva (sin Railway viejo)
 
-- Python 3.10+
-- Node.js 18+ (solo para el frontend estático con Vite)
+**Guía paso a paso:** [`docs/MIGRACION_CUENTA_NUEVA.md`](docs/MIGRACION_CUENTA_NUEVA.md)
 
-## Backend
+| Servicio | Hosting gratis |
+|----------|----------------|
+| Código | GitHub (cuenta nueva) |
+| API | **Render** (`render.yaml`) |
+| Web | **Vercel** (`vercel.json`) |
+| DB | Neon |
+| Auth | Firebase |
 
-```bash
-cd backend
-python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
+## Estructura
+
+```
+├── frontend/     # React + Vite
+├── server/       # Express + Prisma
+├── backend/      # Python ceromancia (opcional)
+├── render.yaml   # Deploy API en Render
+└── vercel.json   # Deploy web en Vercel
 ```
 
-## Frontend
+## Local
 
 ```bash
-cd frontend
 npm install
+cp server/.env.example server/.env
+cp frontend/.env.example frontend/.env
+npm run db:migrate -w server
 npm run dev
 ```
 
-Abre `http://localhost:5173` y configura la API en la UI si no usas el proxy de Vite (por defecto apunta a `http://127.0.0.1:8000`).
+- Web: http://localhost:5173  
+- API: http://localhost:3001/api/v1/health  
 
-## Documentación del flujo del modelo
+Ceromancia: `npm run dev:ceromancy` (puerto 8002).
 
-Ver `docs/MODELO_IA_FLUJO.md`.
+## Scripts
+
+| Comando | Descripción |
+|---------|-------------|
+| `npm run dev` | API + frontend |
+| `npm run build` | Build producción |
+| `bash scripts/migrate-new-account.sh` | Verificar antes de push |
+
+## Seguridad
+
+[`docs/SECURITY.md`](docs/SECURITY.md) — nunca subir `.env` ni service account JSON.
+
+## Docs
+
+- [Migración cuenta nueva](docs/MIGRACION_CUENTA_NUEVA.md)
+- [Deploy general](docs/DEPLOY.md)

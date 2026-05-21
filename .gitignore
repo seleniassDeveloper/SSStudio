@@ -1,10 +1,41 @@
+# Python
 .venv/
+venv/
 __pycache__/
 *.pyc
 .pytest_cache/
-.env
 uploads/
 *.h5
+
+# Secrets — NUNCA subir
+.env
+.env.*
+!.env.example
+!**/.env.example
+*.pem
+*.key
+service-account*.json
+firebase-adminsdk*.json
+**/secrets/
+
+# Node
 node_modules/
 dist/
+server/dist/
+frontend/dist/
+*.log
+.npm/
+
+# Prisma
+.prisma/
+
+# OS / IDE
 .DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Build caches
+*.tsbuildinfo
+.turbo/
+.cache/

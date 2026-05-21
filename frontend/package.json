@@ -1,5 +1,5 @@
 {
-  "name": "ceromancia-frontend",
+  "name": "@ssstudio/frontend",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -12,6 +12,7 @@
     "@react-three/drei": "^9.122.0",
     "@react-three/fiber": "^8.18.0",
     "@studio-freight/lenis": "^1.0.42",
+    "firebase": "^11.4.0",
     "gsap": "^3.15.0",
     "i18next": "^26.2.0",
     "i18next-browser-languagedetector": "^8.2.1",

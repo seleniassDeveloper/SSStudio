@@ -5,8 +5,27 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTranslation } from "react-i18next";
 import BackgroundBlob from "./components/BackgroundBlob";
+import DemoEmbed from "./components/DemoEmbed";
+import {
+  productDemos,
+  isExternalDemo,
+  type DemoKind,
+} from "./config/productDemos";
+import { useTheme } from "./hooks/useTheme";
+import { submitLead, trackEvent, analyzeCandleImage } from "./lib/api";
+import { getIdToken } from "./lib/firebase";
+import { AuthNav } from "./components/AuthNav";
 
 gsap.registerPlugin(ScrollTrigger);
+
+type AppPage = "home" | "ceromancia" | "emociones" | "calorias";
+
+function pageFromPath(pathname: string): AppPage {
+  if (pathname === "/demo/ceromancia") return "ceromancia";
+  if (pathname === "/demo/emociones") return "emociones";
+  if (pathname === "/demo/calorias") return "calorias";
+  return "home";
+}
 
 type Metricas = {
   inclinacion_llama_grados: number;
@@ -33,40 +52,107 @@ type AnalisisResponse = {
 
 export default function App() {
   const { t, i18n } = useTranslation();
+  const { theme, toggleTheme } = useTheme();
 
   // Dynamic document title update based on current language
   useEffect(() => {
     document.title = t("meta.title");
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute("content", t("meta.description"));
   }, [i18n.language, t]);
 
-  // Estado para la navegación
-  // 'home' = Landing Page del Studio
-  // 'ceromancia' = Demo interactiva de visión artificial
-  const [currentPage, setCurrentPage] = useState<"home" | "ceromancia">("home");
+  const [currentPage, setCurrentPage] = useState<AppPage>(() =>
+    pageFromPath(window.location.pathname)
+  );
 
-  // Lenis Smooth Scroll Setup
+  const goHome = useCallback(() => {
+    window.history.pushState({}, "", "/");
+    setCurrentPage("home");
+  }, []);
+
+  const openProductDemo = useCallback((kind: DemoKind) => {
+    const url = productDemos[kind];
+
+    if (kind === "dashboard" || isExternalDemo(url)) {
+      window.open(url, "_blank", "noopener,noreferrer");
+      return;
+    }
+
+    const path =
+      kind === "ceromancia"
+        ? "/demo/ceromancia"
+        : kind === "emotions"
+          ? "/demo/emociones"
+          : "/demo/calorias";
+
+    window.history.pushState({}, "", path);
+    setCurrentPage(pageFromPath(path));
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    const onPopState = () => setCurrentPage(pageFromPath(window.location.pathname));
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
   const lenisRef = useRef<any>(null);
+  const pageRef = useRef(currentPage);
+  pageRef.current = currentPage;
 
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.4,
+      duration: 1.2,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smooth: true,
+      smoothWheel: true,
     });
 
     lenisRef.current = lenis;
     lenis.on("scroll", ScrollTrigger.update);
 
-    const tick = (time: number) => {
-      lenis.raf(time * 1000);
+    ScrollTrigger.scrollerProxy(document.documentElement, {
+      scrollTop(value) {
+        if (arguments.length) {
+          lenis.scrollTo(value, { immediate: true });
+        }
+        return lenis.scroll;
+      },
+      getBoundingClientRect() {
+        return {
+          top: 0,
+          left: 0,
+          width: window.innerWidth,
+          height: window.innerHeight,
+        };
+      },
+    });
+
+    ScrollTrigger.defaults({ scroller: document.documentElement });
+
+    const raf = (time: number) => {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    };
+    requestAnimationFrame(raf);
+
+    const onAnchorClick = (e: MouseEvent) => {
+      const link = (e.target as HTMLElement).closest('a[href^="#"]');
+      if (!link || pageRef.current !== "home") return;
+      const href = link.getAttribute("href");
+      if (!href || href === "#") return;
+      const target = document.querySelector(href);
+      if (!target) return;
+      e.preventDefault();
+      lenis.scrollTo(target);
     };
 
-    gsap.ticker.add(tick);
-    gsap.ticker.lagSmoothing(0);
+    document.addEventListener("click", onAnchorClick);
 
     return () => {
+      document.removeEventListener("click", onAnchorClick);
       lenis.destroy();
-      gsap.ticker.remove(tick);
+      ScrollTrigger.scrollerProxy(document.documentElement, {});
+      ScrollTrigger.defaults({ scroller: window });
     };
   }, []);
 
@@ -79,11 +165,12 @@ export default function App() {
 
   // Estado para el formulario de contacto de la landing
   const [contactSubmitted, setContactSubmitted] = useState(false);
+  const [contactSubmitting, setContactSubmitting] = useState(false);
   const [contactForm, setContactForm] = useState({
     nombre: "",
     proyecto: "",
     descripcion: "",
-    modelo: "hibrido"
+    tipo: "app-nueva"
   });
 
   // Estado para la app de Ceromancia
@@ -111,20 +198,12 @@ export default function App() {
     setPreviewUrl(URL.createObjectURL(f));
   }, [t]);
 
-  // Simular llamada al backend de Ceromancia
   const analyze = async () => {
     if (!file) return;
     setLoading(true);
     setError(null);
     try {
-      const body = new FormData();
-      body.append("file", file);
-      const res = await fetch("/analizar", { method: "POST", body });
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text || res.statusText);
-      }
-      const data: AnalisisResponse = await res.json();
+      const data = (await analyzeCandleImage(file)) as AnalisisResponse;
       setResult(data);
     } catch (e) {
       setError(e instanceof Error ? e.message : t("demo.errorAnalyze"));
@@ -134,21 +213,62 @@ export default function App() {
   };
 
   // Manejador de submit del formulario de contacto
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!contactForm.nombre || !contactForm.descripcion) {
+    if (!contactForm.nombre.trim() || !contactForm.descripcion.trim()) {
       alert(t("contact.errorFields"));
       return;
     }
-    setContactSubmitted(true);
+    if (contactForm.descripcion.trim().length < 5) {
+      alert(t("contact.errorDescMin", { defaultValue: "La descripción debe tener al menos 5 caracteres." }));
+      return;
+    }
+    setContactSubmitting(true);
+    try {
+      const token = await getIdToken();
+      await submitLead(
+        {
+          nombre: contactForm.nombre.trim(),
+          proyecto: contactForm.proyecto.trim() || undefined,
+          tipo: contactForm.tipo,
+          descripcion: contactForm.descripcion.trim(),
+        },
+        token
+      );
+      await trackEvent("contact_form_submit", { tipo: contactForm.tipo }, token);
+      setContactSubmitted(true);
+    } catch (err) {
+      alert(err instanceof Error ? err.message : t("contact.errorSend", { defaultValue: "No se pudo enviar. ¿Está la API en marcha?" }));
+    } finally {
+      setContactSubmitting(false);
+    }
   };
 
-  // Renderizado Condicional de Páginas
+  if (currentPage === "emociones") {
+    return (
+      <DemoEmbed
+        title={t("products.emotions.title")}
+        iframeSrc={productDemos.emotions}
+        onBack={goHome}
+      />
+    );
+  }
+
+  if (currentPage === "calorias") {
+    return (
+      <DemoEmbed
+        title={t("products.calorieVision.title")}
+        iframeSrc={productDemos.calories}
+        onBack={goHome}
+      />
+    );
+  }
+
   if (currentPage === "ceromancia") {
     return (
       <div className="studio-container" style={{ paddingTop: "2rem" }}>
         <div className="demo-header-bar">
-          <button className="demo-back-btn" onClick={() => setCurrentPage("home")}>
+          <button type="button" className="demo-back-btn" onClick={goHome}>
             {t("demo.back")}
           </button>
           <span className="product-badge" style={{ margin: 0 }}>{t("demo.badge")}</span>
@@ -253,20 +373,32 @@ export default function App() {
     );
   }
 
-  // Render principal: Landing Page de AURA Studio
+  // Render principal: Landing Page de SSSTudio
   return (
     <>
-      <BackgroundBlob hide={currentPage === "ceromancia"} />
+      <BackgroundBlob hide={currentPage !== "home"} theme={theme} />
       {/* NAVBAR */}
       <nav className="navbar">
         <a href="#inicio" className="logo" onClick={(e) => { e.preventDefault(); window.scrollTo({top: 0, behavior: 'smooth'}); }}>
-          AURA<span>.</span>
+          SSS<span>Studio</span>
         </a>
         <ul className="nav-links">
+          <li><a href="#servicios">{t("nav.services")}</a></li>
           <li><a href="#productos">{t("nav.products")}</a></li>
-          <li><a href="#como-colaboramos">{t("nav.howWeWork")}</a></li>
-          <li><a href="#filosofia">{t("nav.philosophy")}</a></li>
+          <li><a href="#contacto">{t("nav.workWithUs")}</a></li>
           <li><a href="#contacto" className="nav-btn">{t("nav.cta")}</a></li>
+          <AuthNav />
+          <li>
+            <button
+              type="button"
+              className="theme-toggle"
+              onClick={toggleTheme}
+              aria-label={theme === "dark" ? t("theme.toLight") : t("theme.toDark")}
+              title={theme === "dark" ? t("theme.toLight") : t("theme.toDark")}
+            >
+              {theme === "dark" ? "☀" : "☽"}
+            </button>
+          </li>
           <li className="lang-switcher">
             <button 
               onClick={() => i18n.changeLanguage("es")}
@@ -297,14 +429,14 @@ export default function App() {
             <h1>
               {t("hero.titlePart1")}
               <span className="serif-italic">{t("hero.titleItalic")}</span>
-              {t("hero.titlePart2")}
+              {t("hero.titlePart2") ? t("hero.titlePart2") : null}
             </h1>
             <p>
               {t("hero.subtitle")}
             </p>
             <div className="hero-ctas">
               <a href="#contacto" className="btn btn-primary">{t("hero.ctaIdea")}</a>
-              <a href="#productos" className="btn btn-secondary">{t("hero.ctaProducts")}</a>
+              <a href="#productos" className="btn btn-secondary">{t("hero.ctaHow")}</a>
             </div>
           </div>
           <div className="hero-scroll">
@@ -313,7 +445,65 @@ export default function App() {
           </div>
         </header>
 
-        {/* PRODUCTS SECTION (SKIN IN THE GAME) */}
+        {/* SERVICES — Cómo trabajamos */}
+        <section className="section" id="servicios">
+          <div className="section-header">
+            <span className="section-tag">{t("services.tag")}</span>
+            <h2>{t("services.title")}</h2>
+            <p className="section-description">
+              {t("services.description")}
+            </p>
+          </div>
+
+          <div className="services-grid">
+            <div className="service-card">
+              <div className="service-icon">◈</div>
+              <span className="service-badge">{t("services.ai.badge")}</span>
+              <h3>{t("services.ai.title")}</h3>
+              <p>{t("services.ai.desc")}</p>
+            </div>
+
+            <div className="service-card">
+              <div className="service-icon">◇</div>
+              <span className="service-badge">{t("services.design.badge")}</span>
+              <h3>{t("services.design.title")}</h3>
+              <p>{t("services.design.desc")}</p>
+            </div>
+
+            <div className="service-card">
+              <div className="service-icon">⚡</div>
+              <span className="service-badge">{t("services.speed.badge")}</span>
+              <h3>{t("services.speed.title")}</h3>
+              <p>{t("services.speed.desc")}</p>
+            </div>
+
+            <div className="service-card">
+              <div className="service-icon">✦</div>
+              <span className="service-badge">{t("services.production.badge")}</span>
+              <h3>{t("services.production.title")}</h3>
+              <p>{t("services.production.desc")}</p>
+            </div>
+
+            <div className="service-card">
+              <div className="service-icon">◎</div>
+              <span className="service-badge">{t("services.ideas.badge")}</span>
+              <h3>{t("services.ideas.title")}</h3>
+              <p>{t("services.ideas.desc")}</p>
+            </div>
+          </div>
+        </section>
+
+        {/* VISIÓN */}
+        <section className="section" id="vision">
+          <div className="section-header">
+            <span className="section-tag">{t("vision.tag")}</span>
+            <h2>{t("vision.title")}</h2>
+            <p className="section-description vision-subtitle">{t("vision.subtitle")}</p>
+          </div>
+          <p className="vision-body">{t("vision.body")}</p>
+        </section>
+
+        {/* PRODUCTS — Apps del studio */}
         <section className="section" id="productos">
           <div className="section-header">
             <span className="section-tag">{t("products.tag")}</span>
@@ -329,11 +519,25 @@ export default function App() {
               <div className="product-meta">
                 <span className="product-badge">{t("products.dashboard.tag")}</span>
                 <h3>{t("products.dashboard.title")}</h3>
-                <p>
-                  {t("products.dashboard.desc")}
-                </p>
+                <p>{t("products.dashboard.desc")}</p>
+                <dl className="product-details">
+                  <div>
+                    <dt>{t("products.problemLabel")}</dt>
+                    <dd>{t("products.dashboard.problem")}</dd>
+                  </div>
+                  <div>
+                    <dt>{t("products.aiLabel")}</dt>
+                    <dd>{t("products.dashboard.ai")}</dd>
+                  </div>
+                </dl>
               </div>
-              <span className="product-badge" style={{ alignSelf: "flex-start", background: "rgba(255,255,255,0.03)" }}>{t("products.dashboard.status")}</span>
+              <button
+                type="button"
+                className="product-action"
+                onClick={() => openProductDemo("dashboard")}
+              >
+                {t("products.dashboard.cta")}
+              </button>
             </div>
 
             {/* Ceromancia */}
@@ -341,137 +545,99 @@ export default function App() {
               <div className="product-meta">
                 <span className="product-badge">{t("products.ceromancia.tag")}</span>
                 <h3>{t("products.ceromancia.title")}</h3>
-                <p>
-                  {t("products.ceromancia.desc")}
-                </p>
+                <p>{t("products.ceromancia.desc")}</p>
+                <dl className="product-details">
+                  <div>
+                    <dt>{t("products.problemLabel")}</dt>
+                    <dd>{t("products.ceromancia.problem")}</dd>
+                  </div>
+                  <div>
+                    <dt>{t("products.aiLabel")}</dt>
+                    <dd>{t("products.ceromancia.ai")}</dd>
+                  </div>
+                </dl>
               </div>
-              <button 
-                type="button" 
-                className="product-action" 
-                onClick={() => {
-                  setCurrentPage("ceromancia");
-                  window.scrollTo({top: 0});
-                }}
+              <button
+                type="button"
+                className="product-action"
+                onClick={() => openProductDemo("ceromancia")}
               >
                 {t("products.ceromancia.cta")}
               </button>
             </div>
 
-            {/* CalorieVision */}
+            {/* Análisis emocional */}
+            <div className="product-card">
+              <div className="product-meta">
+                <span className="product-badge">{t("products.emotions.tag")}</span>
+                <h3>{t("products.emotions.title")}</h3>
+                <p>{t("products.emotions.desc")}</p>
+                <dl className="product-details">
+                  <div>
+                    <dt>{t("products.problemLabel")}</dt>
+                    <dd>{t("products.emotions.problem")}</dd>
+                  </div>
+                  <div>
+                    <dt>{t("products.aiLabel")}</dt>
+                    <dd>{t("products.emotions.ai")}</dd>
+                  </div>
+                </dl>
+              </div>
+              <button
+                type="button"
+                className="product-action"
+                onClick={() => openProductDemo("emotions")}
+              >
+                {t("products.emotions.cta")}
+              </button>
+            </div>
+
+            {/* Cuenta calorías */}
             <div className="product-card">
               <div className="product-meta">
                 <span className="product-badge">{t("products.calorieVision.tag")}</span>
                 <h3>{t("products.calorieVision.title")}</h3>
-                <p>
-                  {t("products.calorieVision.desc")}
-                </p>
+                <p>{t("products.calorieVision.desc")}</p>
+                <dl className="product-details">
+                  <div>
+                    <dt>{t("products.problemLabel")}</dt>
+                    <dd>{t("products.calorieVision.problem")}</dd>
+                  </div>
+                  <div>
+                    <dt>{t("products.aiLabel")}</dt>
+                    <dd>{t("products.calorieVision.ai")}</dd>
+                  </div>
+                </dl>
               </div>
-              <span className="product-badge" style={{ alignSelf: "flex-start", background: "rgba(212,175,55,0.1)", color: "var(--accent)" }}>{t("products.calorieVision.status")}</span>
+              <button
+                type="button"
+                className="product-action"
+                onClick={() => openProductDemo("calories")}
+              >
+                {t("products.calorieVision.cta")}
+              </button>
             </div>
           </div>
+          <p className="products-closing">{t("products.closing")}</p>
         </section>
 
-        {/* SERVICES / HOW WE WORK SECTION */}
-        <section className="section" id="como-colaboramos">
+        {/* MATCH — ¿Trabajamos juntos? */}
+        <section className="section" id="trabajar">
           <div className="section-header">
-            <span className="section-tag">{t("collaboration.tag")}</span>
-            <h2>{t("collaboration.title")}</h2>
-            <p className="section-description">
-              {t("collaboration.description")}
-            </p>
+            <span className="section-tag">{t("match.tag")}</span>
+            <h2>{t("match.title")}</h2>
           </div>
-
-          <div className="services-grid">
-            {/* Build for Fee */}
-            <div className="service-card">
-              <div className="service-icon">⚙</div>
-              <span className="service-badge">{t("collaboration.fee.badge")}</span>
-              <h3>{t("collaboration.fee.title")}</h3>
-              <p>
-                {t("collaboration.fee.desc")}
-              </p>
-            </div>
-
-            {/* Build for Equity */}
-            <div className="service-card">
-              <div className="service-icon">🤝</div>
-              <span className="service-badge">{t("collaboration.equity.badge")}</span>
-              <h3>{t("collaboration.equity.title")}</h3>
-              <p>
-                {t("collaboration.equity.desc")}
-              </p>
-            </div>
-
-            {/* Build Together */}
-            <div className="service-card">
-              <div className="service-icon">⚡</div>
-              <span className="service-badge">{t("collaboration.hybrid.badge")}</span>
-              <h3>{t("collaboration.hybrid.title")}</h3>
-              <p>
-                {t("collaboration.hybrid.desc")}
-              </p>
-            </div>
+          <div className="match-card" style={{ maxWidth: "720px" }}>
+            <ul className="match-list match-list-yes">
+              <li>{t("match.yes1")}</li>
+              <li>{t("match.yes2")}</li>
+              <li>{t("match.yes3")}</li>
+              <li>{t("match.yes4")}</li>
+            </ul>
           </div>
         </section>
 
-        {/* MANIFESTO & MATCH SECTION */}
-        <section className="section" id="filosofia">
-          <div className="split-grid">
-            {/* Manifiesto */}
-            <div>
-              <div className="section-header" style={{ marginBottom: "2.5rem" }}>
-                <span className="section-tag">{t("manifesto.tag")}</span>
-                <h2>{t("manifesto.title")}</h2>
-              </div>
-              <div className="manifesto-list">
-                <div className="manifesto-item">
-                  <h3>{t("manifesto.item1.title")}</h3>
-                  <p>
-                    {t("manifesto.item1.desc")}
-                  </p>
-                </div>
-                <div className="manifesto-item">
-                  <h3>{t("manifesto.item2.title")}</h3>
-                  <p>
-                    {t("manifesto.item2.desc")}
-                  </p>
-                </div>
-                <div className="manifesto-item">
-                  <h3>{t("manifesto.item3.title")}</h3>
-                  <p>
-                    {t("manifesto.item3.desc")}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Criterios de Selección */}
-            <div>
-              <div className="section-header" style={{ marginBottom: "2.5rem" }}>
-                <span className="section-tag">{t("match.tag")}</span>
-                <h2>{t("match.title")}</h2>
-              </div>
-              <div className="match-card">
-                <h3>{t("match.yesTitle")}</h3>
-                <ul className="match-list match-list-yes" style={{ marginBottom: "2rem" }}>
-                  <li>{t("match.yes1")}</li>
-                  <li>{t("match.yes2")}</li>
-                  <li>{t("match.yes3")}</li>
-                  <li>{t("match.yes4")}</li>
-                </ul>
-
-                <h3>{t("match.noTitle")}</h3>
-                <ul className="match-list match-list-no">
-                  <li>{t("match.no1")}</li>
-                  <li>{t("match.no2")}</li>
-                  <li>{t("match.no3")}</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA / CONTACT FORM SECTION */}
+        {/* CONTACT */}
         <section className="section" id="contacto" style={{ borderBottom: "none" }}>
           <div className="cta-container">
             <div className="cta-info">
@@ -500,7 +666,7 @@ export default function App() {
                     style={{ marginTop: "1.5rem", fontSize: "0.85rem", padding: "0.5rem 1rem" }}
                     onClick={() => {
                       setContactSubmitted(false);
-                      setContactForm({ nombre: "", proyecto: "", descripcion: "", modelo: "hibrido" });
+                      setContactForm({ nombre: "", proyecto: "", descripcion: "", tipo: "app-nueva" });
                     }}
                   >
                     {t("contact.success.button")}
@@ -530,15 +696,16 @@ export default function App() {
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="modelo">{t("contact.form.model")}</label>
+                    <label htmlFor="tipo">{t("contact.form.type")}</label>
                     <select 
-                      id="modelo"
-                      value={contactForm.modelo}
-                      onChange={(e) => setContactForm({ ...contactForm, modelo: e.target.value })}
+                      id="tipo"
+                      value={contactForm.tipo}
+                      onChange={(e) => setContactForm({ ...contactForm, tipo: e.target.value })}
                     >
-                      <option value="fee">{t("contact.form.optionFee")}</option>
-                      <option value="equity">{t("contact.form.optionEquity")}</option>
-                      <option value="hibrido">{t("contact.form.optionHybrid")}</option>
+                      <option value="app-nueva">{t("contact.form.optionNew")}</option>
+                      <option value="integrar">{t("contact.form.optionIntegrate")}</option>
+                      <option value="mejorar">{t("contact.form.optionImprove")}</option>
+                      <option value="otro">{t("contact.form.optionOther")}</option>
                     </select>
                   </div>
                   <div className="form-group">
@@ -547,12 +714,18 @@ export default function App() {
                       id="descripcion" 
                       placeholder={t("contact.form.descPlaceholder")} 
                       required
+                      minLength={5}
                       value={contactForm.descripcion}
                       onChange={(e) => setContactForm({ ...contactForm, descripcion: e.target.value })}
                     ></textarea>
                   </div>
-                  <button type="submit" className="btn btn-primary" style={{ width: "100%", marginTop: "0.5rem" }}>
-                    {t("contact.form.submit")}
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    style={{ width: "100%", marginTop: "0.5rem" }}
+                    disabled={contactSubmitting}
+                  >
+                    {contactSubmitting ? t("contact.form.sending", { defaultValue: "Enviando…" }) : t("contact.form.submit")}
                   </button>
                 </form>
               )}
@@ -564,9 +737,9 @@ export default function App() {
         <footer className="footer">
           <p>{t("footer.rights", { year: new Date().getFullYear() })}</p>
           <div className="footer-links">
+            <a href="#servicios">{t("footer.links.services")}</a>
             <a href="#productos">{t("footer.links.products")}</a>
-            <a href="#como-colaboramos">{t("footer.links.collab")}</a>
-            <a href="#filosofia">{t("footer.links.philosophy")}</a>
+            <a href="#contacto">{t("footer.links.contact")}</a>
           </div>
         </footer>
       </div>

@@ -6,8 +6,19 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      "/analizar": { target: "http://127.0.0.1:8000", changeOrigin: true },
-      "/health": { target: "http://127.0.0.1:8000", changeOrigin: true },
+      "/api": { target: "http://127.0.0.1:3001", changeOrigin: true },
+      "/analizar": { target: "http://127.0.0.1:3001", changeOrigin: true },
+      "/health": { target: "http://127.0.0.1:3001", changeOrigin: true },
+      "/ext/bodysense": {
+        target: "http://127.0.0.1:5174",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/ext\/bodysense/, "") || "/",
+      },
+      "/ext/calorias": {
+        target: "http://127.0.0.1:8081",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/ext\/calorias/, "") || "/",
+      },
     },
   },
 });

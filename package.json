@@ -1,0 +1,31 @@
+{
+  "name": "ssstudio-saas",
+  "private": true,
+  "version": "1.0.0",
+  "description": "SSSTudio — SaaS platform (React + Node + PostgreSQL + Firebase)",
+  "workspaces": [
+    "server",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,web -c blue,green \"npm run dev -w server\" \"npm run dev -w frontend\"",
+    "dev:api": "npm run dev -w server",
+    "dev:web": "npm run dev -w frontend",
+    "dev:ceromancy": "cd backend && .venv/bin/python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8002",
+    "build": "npm run build -w server && npm run build -w frontend",
+    "build:api": "npm run build -w server",
+    "build:web": "npm run build -w frontend",
+    "start": "npm run start -w server",
+    "db:generate": "npm run db:generate -w server",
+    "db:push": "npm run db:push -w server",
+    "db:migrate": "npm run db:migrate -w server",
+    "db:studio": "npm run db:studio -w server",
+    "postinstall": "npm run db:generate -w server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

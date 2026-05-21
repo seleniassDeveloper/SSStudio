@@ -1,0 +1,141 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum OrgRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum PlanTier {
+  FREE
+  PRO
+  ENTERPRISE
+}
+
+enum ProjectStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+/// Usuario autenticado vía Firebase
+model User {
+  id          String   @id @default(cuid())
+  firebaseUid String   @unique @map("firebase_uid")
+  email       String   @unique
+  displayName String?  @map("display_name")
+  photoUrl    String?  @map("photo_url")
+  role        UserRole @default(USER)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  memberships OrganizationMember[]
+  leads       Lead[]
+  events      AnalyticsEvent[]
+
+  @@map("users")
+}
+
+/// Organización / workspace (multi-tenant SaaS)
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  plan      PlanTier @default(FREE)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  members  OrganizationMember[]
+  projects Project[]
+
+  @@map("organizations")
+}
+
+model OrganizationMember {
+  id             String   @id @default(cuid())
+  organizationId String   @map("organization_id")
+  userId         String   @map("user_id")
+  role           OrgRole  @default(MEMBER)
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, userId])
+  @@map("organization_members")
+}
+
+/// Leads del formulario de contacto (público)
+model Lead {
+  id          String   @id @default(cuid())
+  nombre      String
+  email       String?
+  proyecto    String?
+  tipo        String?
+  descripcion String   @db.Text
+  userId      String?  @map("user_id")
+  source      String   @default("landing")
+  metadata    Json?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+  @@map("leads")
+}
+
+/// Proyectos / apps del cliente (escalable)
+model Project {
+  id             String        @id @default(cuid())
+  organizationId String        @map("organization_id")
+  name           String
+  type           String        @default("app")
+  status         ProjectStatus @default(ACTIVE)
+  config         Json?
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@map("projects")
+}
+
+/// Eventos de analytics (dashboards en tiempo real después)
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+  userId    String?  @map("user_id")
+  name      String
+  payload   Json?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([name, createdAt])
+  @@map("analytics_events")
+}
+
+/// Placeholder suscripciones (Stripe después)
+model Subscription {
+  id             String    @id @default(cuid())
+  organizationId String    @unique @map("organization_id")
+  plan           PlanTier  @default(FREE)
+  status         String    @default("active")
+  externalId     String?   @map("external_id")
+  currentPeriodEnd DateTime? @map("current_period_end")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  @@map("subscriptions")
+}

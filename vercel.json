@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "name": "ssstudio",
+  "installCommand": "npm install",
+  "buildCommand": "npm run build -w frontend",
+  "outputDirectory": "frontend/dist",
+  "framework": "vite",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}

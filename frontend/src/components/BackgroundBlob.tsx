@@ -1,4 +1,5 @@
 import { useRef, useEffect, useMemo } from "react";
+import type { Theme } from "../hooks/useTheme";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { MeshDistortMaterial, Sphere, Environment, Float } from "@react-three/drei";
 import { gsap } from "gsap";
@@ -7,7 +8,27 @@ import * as THREE from "three";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function Blob() {
+const SECTION_THEMES: Record<
+  Theme,
+  { trigger: string; bg: string; x: number; y: number; scale: number; distort: number; spread: number }[]
+> = {
+  dark: [
+    { trigger: "#servicios", bg: "#0a0a14", x: -1.35, y: -0.05, scale: 1.25, distort: 0.3, spread: 1.35 },
+    { trigger: "#vision", bg: "#0b0810", x: 0.4, y: 0.05, scale: 1.2, distort: 0.32, spread: 1.05 },
+    { trigger: "#productos", bg: "#0d0912", x: 0.8, y: -0.1, scale: 1.45, distort: 0.4, spread: 1.1 },
+    { trigger: "#trabajar", bg: "#08070b", x: 1.3, y: -0.2, scale: 1.1, distort: 0.35, spread: 0.9 },
+    { trigger: "#contacto", bg: "#100918", x: 0.15, y: -0.35, scale: 1.6, distort: 0.45, spread: 1.2 },
+  ],
+  light: [
+    { trigger: "#servicios", bg: "#f0eef5", x: -1.35, y: -0.05, scale: 1.25, distort: 0.3, spread: 1.35 },
+    { trigger: "#vision", bg: "#f7f6f3", x: 0.4, y: 0.05, scale: 1.2, distort: 0.32, spread: 1.05 },
+    { trigger: "#productos", bg: "#ebe8f2", x: 0.8, y: -0.1, scale: 1.45, distort: 0.4, spread: 1.1 },
+    { trigger: "#trabajar", bg: "#f5f3f8", x: 1.3, y: -0.2, scale: 1.1, distort: 0.35, spread: 0.9 },
+    { trigger: "#contacto", bg: "#edeaf4", x: 0.15, y: -0.35, scale: 1.6, distort: 0.45, spread: 1.2 },
+  ],
+};
+
+function Blob({ theme }: { theme: Theme }) {
   const groupRef = useRef<THREE.Group>(null);
   const materialRef = useRef<any>(null);
   const nodesRef = useRef<(THREE.Mesh | null)[]>([]);
@@ -78,44 +99,7 @@ function Blob() {
 
       groupRef.current.userData.proxy = proxy;
 
-      const sections = [
-        {
-          trigger: "#productos",
-          bg: "#0d0912", // deep purple
-          x: 0.8,
-          y: -0.1,
-          scale: 1.45,
-          distort: 0.4,
-          spread: 1.1,
-        },
-        {
-          trigger: "#como-colaboramos",
-          bg: "#0a0a14", // dark navy
-          x: -1.35,
-          y: -0.05,
-          scale: 1.25,
-          distort: 0.3,
-          spread: 1.35,
-        },
-        {
-          trigger: "#filosofia",
-          bg: "#08070b", // black-purple
-          x: 1.3,
-          y: -0.2,
-          scale: 1.1,
-          distort: 0.35,
-          spread: 0.9,
-        },
-        {
-          trigger: "#contacto",
-          bg: "#100918", // premium warm violet
-          x: 0.15,
-          y: -0.35,
-          scale: 1.6,
-          distort: 0.45,
-          spread: 1.2,
-        },
-      ];
+      const sections = SECTION_THEMES[theme];
 
       sections.forEach((section) => {
         if (!document.querySelector(section.trigger)) return;
@@ -168,7 +152,7 @@ function Blob() {
     });
 
     return () => ctx.revert();
-  }, []);
+  }, [theme]);
 
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
@@ -238,7 +222,13 @@ function Blob() {
   );
 }
 
-export default function BackgroundBlob({ hide }: { hide: boolean }) {
+export default function BackgroundBlob({
+  hide,
+  theme,
+}: {
+  hide: boolean;
+  theme: Theme;
+}) {
   if (hide) return null;
 
   return (
@@ -262,7 +252,7 @@ export default function BackgroundBlob({ hide }: { hide: boolean }) {
         <pointLight position={[0, 1.8, 2]} intensity={1.2} color="#a855f7" />
 
         <Environment preset="city" />
-        <Blob />
+        <Blob theme={theme} />
       </Canvas>
     </div>
   );

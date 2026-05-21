@@ -1,0 +1,32 @@
+# Deploy API desde cuenta Render NUEVA (sin Railway)
+# Dashboard: New → Blueprint → conectar repo → detecta este archivo
+services:
+  - type: web
+    name: ssstudio-api
+    runtime: node
+    plan: free
+    rootDir: server
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: npx prisma migrate deploy && npm run start
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: DATABASE_URL
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: FIREBASE_PROJECT_ID
+        sync: false
+      - key: FIREBASE_CLIENT_EMAIL
+        sync: false
+      - key: FIREBASE_PRIVATE_KEY
+        sync: false
+      - key: CEROMANCY_SERVICE_URL
+        sync: false
+      - key: RATE_LIMIT_WINDOW_MS
+        value: 900000
+      - key: RATE_LIMIT_MAX
+        value: 100
