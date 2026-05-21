@@ -572,11 +572,4 @@ export default function App() {
       </div>
     </>
   );
-}aboración</a>
-            <a href="#filosofia">Filosofía</a>
-          </div>
-        </footer>
-      </div>
-    </>
-  );
 }
