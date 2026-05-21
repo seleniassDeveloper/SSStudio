@@ -3,6 +3,7 @@ import { useCallback, useState, useEffect, useRef } from "react";
 import Lenis from "@studio-freight/lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslation } from "react-i18next";
 import BackgroundBlob from "./components/BackgroundBlob";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -31,6 +32,13 @@ type AnalisisResponse = {
 };
 
 export default function App() {
+  const { t, i18n } = useTranslation();
+
+  // Dynamic document title update based on current language
+  useEffect(() => {
+    document.title = t("meta.title");
+  }, [i18n.language, t]);
+
   // Estado para la navegación
   // 'home' = Landing Page del Studio
   // 'ceromancia' = Demo interactiva de visión artificial
@@ -96,12 +104,12 @@ export default function App() {
       return;
     }
     if (!f.type.startsWith("image/")) {
-      setError("Selecciona un archivo de imagen (JPEG, PNG o WebP).");
+      setError(t("demo.errorType"));
       return;
     }
     setFile(f);
     setPreviewUrl(URL.createObjectURL(f));
-  }, []);
+  }, [t]);
 
   // Simular llamada al backend de Ceromancia
   const analyze = async () => {
@@ -119,7 +127,7 @@ export default function App() {
       const data: AnalisisResponse = await res.json();
       setResult(data);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Error al analizar.");
+      setError(e instanceof Error ? e.message : t("demo.errorAnalyze"));
     } finally {
       setLoading(false);
     }
@@ -129,7 +137,7 @@ export default function App() {
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!contactForm.nombre || !contactForm.descripcion) {
-      alert("Por favor completá los campos principales para iniciar la conversación.");
+      alert(t("contact.errorFields"));
       return;
     }
     setContactSubmitted(true);
@@ -141,17 +149,16 @@ export default function App() {
       <div className="studio-container" style={{ paddingTop: "2rem" }}>
         <div className="demo-header-bar">
           <button className="demo-back-btn" onClick={() => setCurrentPage("home")}>
-            ← Volver al inicio del studio
+            {t("demo.back")}
           </button>
-          <span className="product-badge" style={{ margin: 0 }}>Demo Interactiva</span>
+          <span className="product-badge" style={{ margin: 0 }}>{t("demo.badge")}</span>
         </div>
 
         <div className="demo-content-container">
           <div className="demo-title-container">
-            <h1>Ceromancia asistida por visión</h1>
+            <h1>{t("demo.title")}</h1>
             <p className="demo-subtitle">
-              Subí una foto de una vela encendida. El backend combina métricas visuales
-              interpretables con un modelo ligero de TensorFlow para devolver patrones simbólicos.
+              {t("demo.subtitle")}
             </p>
           </div>
 
@@ -170,7 +177,7 @@ export default function App() {
             }}
             style={{ marginTop: "2rem" }}
           >
-            <p>Arrastrá una imagen de tu vela encendida aquí o elegí un archivo.</p>
+            <p>{t("demo.dropzone")}</p>
             <input
               type="file"
               accept="image/*"
@@ -179,7 +186,7 @@ export default function App() {
             />
             <label htmlFor="file">
               <button type="button" disabled={loading} onClick={() => document.getElementById("file")?.click()}>
-                Elegir foto
+                {t("demo.choose")}
               </button>
             </label>
           </div>
@@ -192,32 +199,32 @@ export default function App() {
                 <img src={previewUrl} alt="Vista previa de la vela" />
               </div>
               <div className="panel">
-                <h2>Interpretación</h2>
+                <h2>{t("demo.interpret")}</h2>
                 <button type="button" onClick={analyze} disabled={loading} style={{ marginBottom: "1rem" }}>
-                  {loading ? "Analizando imagen..." : "Analizar imagen"}
+                  {loading ? t("demo.btnAnalyzing") : t("demo.btnAnalyze")}
                 </button>
                 {result ? (
                   <>
                     <p style={{ marginTop: "0.5rem", lineHeight: 1.5 }}>{result.resumen}</p>
                     <div className="metrics">
                       <div>
-                        <span>Inclinación llama</span>
+                        <span>{t("demo.metric.flameAngle")}</span>
                         <strong>{result.metricas.inclinacion_llama_grados}°</strong>
                       </div>
                       <div>
-                        <span>Asimetría cera</span>
+                        <span>{t("demo.metric.waxAsym")}</span>
                         <strong>{result.metricas.asimetria_cera}</strong>
                       </div>
                       <div>
-                        <span>Residuos oscuros</span>
+                        <span>{t("demo.metric.darkResidue")}</span>
                         <strong>{(result.metricas.ratio_residuos_oscuros * 100).toFixed(1)}%</strong>
                       </div>
                       <div>
-                        <span>Elongación inferior</span>
+                        <span>{t("demo.metric.dripElongation")}</span>
                         <strong>{result.metricas.elongacion_gotas_inferior}</strong>
                       </div>
                       <div>
-                        <span>Brillo llama</span>
+                        <span>{t("demo.metric.flameBrightness")}</span>
                         <strong>{result.metricas.brillo_promedio_llama}</strong>
                       </div>
                     </div>
@@ -225,7 +232,7 @@ export default function App() {
                       {result.patrones.map((p) => (
                         <li key={p.pattern_id + p.nombre}>
                           <h3>{p.nombre}</h3>
-                          <div className="conf">Confianza: {(p.confianza * 100).toFixed(1)}%</div>
+                          <div className="conf">{t("demo.confidence")}: {(p.confianza * 100).toFixed(1)}%</div>
                           <p>{p.interpretacion}</p>
                           <p style={{ marginTop: "0.5rem", fontSize: "0.85rem", fontStyle: "italic" }}>{p.detalles_visuales}</p>
                         </li>
@@ -235,7 +242,7 @@ export default function App() {
                   </>
                 ) : (
                   <p style={{ marginTop: "0.5rem", color: "var(--muted)", fontSize: "0.95rem" }}>
-                    Hacé click en «Analizar imagen» para enviar la foto al servidor.
+                    {t("demo.promptAnalyze")}
                   </p>
                 )}
               </div>
@@ -256,10 +263,25 @@ export default function App() {
           AURA<span>.</span>
         </a>
         <ul className="nav-links">
-          <li><a href="#productos">Productos</a></li>
-          <li><a href="#como-colaboramos">Cómo colaboramos</a></li>
-          <li><a href="#filosofia">Filosofía</a></li>
-          <li><a href="#contacto" className="nav-btn" style={{ marginLeft: "1rem" }}>Iniciar conversación</a></li>
+          <li><a href="#productos">{t("nav.products")}</a></li>
+          <li><a href="#como-colaboramos">{t("nav.howWeWork")}</a></li>
+          <li><a href="#filosofia">{t("nav.philosophy")}</a></li>
+          <li><a href="#contacto" className="nav-btn">{t("nav.cta")}</a></li>
+          <li className="lang-switcher">
+            <button 
+              onClick={() => i18n.changeLanguage("es")}
+              className={`lang-btn ${i18n.language.startsWith("es") ? "active" : ""}`}
+            >
+              ES
+            </button>
+            <span className="lang-separator">/</span>
+            <button 
+              onClick={() => i18n.changeLanguage("en")}
+              className={`lang-btn ${i18n.language.startsWith("en") ? "active" : ""}`}
+            >
+              EN
+            </button>
+          </li>
         </ul>
       </nav>
 
@@ -272,15 +294,17 @@ export default function App() {
             <div className="blob blob-3"></div>
           </div>
           <div className="hero-content">
-            <h1>Creamos productos de IA visual y SaaS con obsesión por el diseño.</h1>
+            <h1>
+              {t("hero.titlePart1")}
+              <span className="serif-italic">{t("hero.titleItalic")}</span>
+              {t("hero.titlePart2")}
+            </h1>
             <p>
-              Somos un estudio híbrido. Desarrollamos tecnología propia y co-creamos software 
-              excepcional junto a fundadores y empresas que buscan velocidad, criterio estético y 
-              ejecución técnica sin rodeos.
+              {t("hero.subtitle")}
             </p>
             <div className="hero-ctas">
-              <a href="#contacto" className="btn btn-primary">Hablemos de tu idea</a>
-              <a href="#productos" className="btn btn-secondary">Nuestros productos</a>
+              <a href="#contacto" className="btn btn-primary">{t("hero.ctaIdea")}</a>
+              <a href="#productos" className="btn btn-secondary">{t("hero.ctaProducts")}</a>
             </div>
           </div>
           <div className="hero-scroll">
@@ -292,11 +316,10 @@ export default function App() {
         {/* PRODUCTS SECTION (SKIN IN THE GAME) */}
         <section className="section" id="productos">
           <div className="section-header">
-            <span className="section-tag">Skin in the game</span>
-            <h2>Nuestros productos</h2>
+            <span className="section-tag">{t("products.tag")}</span>
+            <h2>{t("products.title")}</h2>
             <p className="section-description">
-              No tomamos pedidos a ciegas. Construimos, operamos y escalamos nuestros propios 
-              productos todos los días. Esta es la tecnología que respalda nuestra experiencia:
+              {t("products.description")}
             </p>
           </div>
 
@@ -304,24 +327,22 @@ export default function App() {
             {/* Dashboard Modular */}
             <div className="product-card">
               <div className="product-meta">
-                <span className="product-badge">Plataforma SaaS</span>
-                <h3>Dashboard Modular</h3>
+                <span className="product-badge">{t("products.dashboard.tag")}</span>
+                <h3>{t("products.dashboard.title")}</h3>
                 <p>
-                  Plataforma completa de gestión para negocios basados en citas y clientes (barberías, 
-                  spas, clínicas). Foco en arquitectura limpia, UX responsiva y experiencia diaria sin fricciones.
+                  {t("products.dashboard.desc")}
                 </p>
               </div>
-              <span className="product-badge" style={{ alignSelf: "flex-start", background: "rgba(255,255,255,0.03)" }}>Lanzado</span>
+              <span className="product-badge" style={{ alignSelf: "flex-start", background: "rgba(255,255,255,0.03)" }}>{t("products.dashboard.status")}</span>
             </div>
 
             {/* Ceromancia */}
             <div className="product-card">
               <div className="product-meta">
-                <span className="product-badge">IA Visual / Visión Artificial</span>
-                <h3>Ceromancia</h3>
+                <span className="product-badge">{t("products.ceromancia.tag")}</span>
+                <h3>{t("products.ceromancia.title")}</h3>
                 <p>
-                  Aplicación premium que analiza patrones de velas mediante visión por computadora en 
-                  tiempo real. Combina algoritmos heurísticos con UX mística de alta fidelidad.
+                  {t("products.ceromancia.desc")}
                 </p>
               </div>
               <button 
@@ -332,21 +353,20 @@ export default function App() {
                   window.scrollTo({top: 0});
                 }}
               >
-                Probar demo interactiva local →
+                {t("products.ceromancia.cta")}
               </button>
             </div>
 
             {/* CalorieVision */}
             <div className="product-card">
               <div className="product-meta">
-                <span className="product-badge">Wearables & Edge AI</span>
-                <h3>CalorieVision</h3>
+                <span className="product-badge">{t("products.calorieVision.tag")}</span>
+                <h3>{t("products.calorieVision.title")}</h3>
                 <p>
-                  Análisis nutricional en tiempo real mediante visión por computadora. Diseñado para 
-                  correr de manera ligera y eficiente en dispositivos vestibles como las Meta Ray-Ban.
+                  {t("products.calorieVision.desc")}
                 </p>
               </div>
-              <span className="product-badge" style={{ alignSelf: "flex-start", background: "rgba(212,175,55,0.1)", color: "var(--accent)" }}>En desarrollo</span>
+              <span className="product-badge" style={{ alignSelf: "flex-start", background: "rgba(212,175,55,0.1)", color: "var(--accent)" }}>{t("products.calorieVision.status")}</span>
             </div>
           </div>
         </section>
@@ -354,11 +374,10 @@ export default function App() {
         {/* SERVICES / HOW WE WORK SECTION */}
         <section className="section" id="como-colaboramos">
           <div className="section-header">
-            <span className="section-tag">Modelos de colaboración</span>
-            <h2>Cómo colaboramos</h2>
+            <span className="section-tag">{t("collaboration.tag")}</span>
+            <h2>{t("collaboration.title")}</h2>
             <p className="section-description">
-              No facturamos horas vacías ni vendemos «transformación digital». Nos asociamos para diseñar 
-              y construir productos reales. Elegí el formato que mejor se adapte a tu etapa:
+              {t("collaboration.description")}
             </p>
           </div>
 
@@ -366,36 +385,30 @@ export default function App() {
             {/* Build for Fee */}
             <div className="service-card">
               <div className="service-icon">⚙</div>
-              <span className="service-badge">Ejecución y Velocidad</span>
-              <h3>Build for Fee</h3>
+              <span className="service-badge">{t("collaboration.fee.badge")}</span>
+              <h3>{t("collaboration.fee.title")}</h3>
               <p>
-                Diseñamos y construimos tu producto de inicio a fin bajo un presupuesto y alcance claros. 
-                Es el modelo ideal para lanzar una V1 impecable al mercado o integrar modelos de IA visual 
-                sin desviar a tu equipo interno.
+                {t("collaboration.fee.desc")}
               </p>
             </div>
 
             {/* Build for Equity */}
             <div className="service-card">
               <div className="service-icon">🤝</div>
-              <span className="service-badge">Co-inversión Tecnológica</span>
-              <h3>Build for Equity</h3>
+              <span className="service-badge">{t("collaboration.equity.badge")}</span>
+              <h3>{t("collaboration.equity.title")}</h3>
               <p>
-                Invertimos nuestro equipo técnico y de diseño en tu visión. Si tu proyecto se alinea con 
-                nuestra tesis y vemos potencial a largo plazo, asumimos parte o la totalidad del costo a 
-                cambio de una participación (equity) en la compañía.
+                {t("collaboration.equity.desc")}
               </p>
             </div>
 
             {/* Build Together */}
             <div className="service-card">
               <div className="service-icon">⚡</div>
-              <span className="service-badge">Modelo Híbrido</span>
-              <h3>Build Together</h3>
+              <span className="service-badge">{t("collaboration.hybrid.badge")}</span>
+              <h3>{t("collaboration.hybrid.title")}</h3>
               <p>
-                El equilibrio perfecto para startups en etapa temprana. Combinamos una tarifa base mensual 
-                optimizada para cubrir costos operativos y un porcentaje menor de equity. Compartimos el 
-                riesgo y alineamos incentivos desde el primer día.
+                {t("collaboration.hybrid.desc")}
               </p>
             </div>
           </div>
@@ -407,29 +420,26 @@ export default function App() {
             {/* Manifiesto */}
             <div>
               <div className="section-header" style={{ marginBottom: "2.5rem" }}>
-                <span className="section-tag">Filosofía</span>
-                <h2>El Manifiesto de Aura</h2>
+                <span className="section-tag">{t("manifesto.tag")}</span>
+                <h2>{t("manifesto.title")}</h2>
               </div>
               <div className="manifesto-list">
                 <div className="manifesto-item">
-                  <h3><span>01 /</span> El diseño no es cosmética</h3>
+                  <h3>{t("manifesto.item1.title")}</h3>
                   <p>
-                    El diseño define cómo funciona el producto, no solo cómo se ve. Creemos en flujos de 
-                    trabajo limpios, transiciones fluidas y una velocidad de carga que se sienta instantánea.
+                    {t("manifesto.item1.desc")}
                   </p>
                 </div>
                 <div className="manifesto-item">
-                  <h3><span>02 /</span> IA útil, no hype</h3>
+                  <h3>{t("manifesto.item2.title")}</h3>
                   <p>
-                    No metemos IA en un botón solo para sonar modernos. Usamos visión artificial para resolver 
-                    problemas reales que aportan valor tangible y diferencian a tu negocio.
+                    {t("manifesto.item2.desc")}
                   </p>
                 </div>
                 <div className="manifesto-item">
-                  <h3><span>03 /</span> Sin rodeos corporativos</h3>
+                  <h3>{t("manifesto.item3.title")}</h3>
                   <p>
-                    Hablamos y operamos como constructores de producto (ingenieros y diseñadores), no como 
-                    ejecutivos de cuenta. Comunicación directa, sin burocracia ni jerga innecesaria.
+                    {t("manifesto.item3.desc")}
                   </p>
                 </div>
               </div>
@@ -438,22 +448,23 @@ export default function App() {
             {/* Criterios de Selección */}
             <div>
               <div className="section-header" style={{ marginBottom: "2.5rem" }}>
-                <span className="section-tag">Compatibilidad</span>
-                <h2>¿Hacemos match?</h2>
+                <span className="section-tag">{t("match.tag")}</span>
+                <h2>{t("match.title")}</h2>
               </div>
               <div className="match-card">
-                <h3>Sí trabajamos juntos si:</h3>
+                <h3>{t("match.yesTitle")}</h3>
                 <ul className="match-list match-list-yes" style={{ marginBottom: "2rem" }}>
-                  <li>Tenés una idea clara de producto <span>(no buscás ideas de nuestra parte)</span></li>
-                  <li>Valorás el diseño premium de interfaz <span>(buscás diferenciarte por UX)</span></li>
-                  <li>Querés un socio que opine activamente <span>(no solo un tomador de pedidos)</span></li>
+                  <li>{t("match.yes1")}</li>
+                  <li>{t("match.yes2")}</li>
+                  <li>{t("match.yes3")}</li>
+                  <li>{t("match.yes4")}</li>
                 </ul>
 
-                <h3>No trabajamos juntos si:</h3>
+                <h3>{t("match.noTitle")}</h3>
                 <ul className="match-list match-list-no">
-                  <li>Buscás una plantilla barata <span>(nuestro foco es software a medida de alta calidad)</span></li>
-                  <li>El diseño o la velocidad no son prioridad <span>(hacemos software pulido y rápido)</span></li>
-                  <li>El producto no encaja en nuestra tesis de IA visual o SaaS</li>
+                  <li>{t("match.no1")}</li>
+                  <li>{t("match.no2")}</li>
+                  <li>{t("match.no3")}</li>
                 </ul>
               </div>
             </div>
@@ -464,25 +475,24 @@ export default function App() {
         <section className="section" id="contacto" style={{ borderBottom: "none" }}>
           <div className="cta-container">
             <div className="cta-info">
-              <span className="section-tag">Iniciar contacto</span>
-              <h2>Hablemos de producto (no de presupuestos genéricos)</h2>
+              <span className="section-tag">{t("contact.tag")}</span>
+              <h2>{t("contact.title")}</h2>
               <p>
-                Solo co-creamos 2 o 3 proyectos al año para garantizar que cada uno reciba el mismo nivel 
-                de atención y obsesión por el detalle que nuestros propios productos. 
+                {t("contact.p1")}
               </p>
               <p>
-                Si estás construyendo algo en IA visual, SaaS o una interfaz interactiva de alta fidelidad, 
-                contanos de qué se trata. Si hay alineación, coordinamos un café virtual.
+                {t("contact.p2")}
               </p>
             </div>
 
             <div>
               {contactSubmitted ? (
                 <div className="form-success-msg">
-                  <h3>¡Mensaje recibido!</h3>
+                  <h3>{t("contact.success.title")}</h3>
                   <p style={{ marginTop: "0.5rem", color: "var(--text)", fontSize: "0.9rem" }}>
-                    Gracias, {contactForm.nombre}. Nos interesa mucho lo que contás sobre {contactForm.proyecto || "tu proyecto"}. 
-                    Vamos a analizar tu idea y te responderemos en las próximas 24 horas para coordinar la charla.
+                    {contactForm.proyecto 
+                      ? t("contact.success.msg", { nombre: contactForm.nombre, proyecto: contactForm.proyecto })
+                      : t("contact.success.msgDefault", { nombre: contactForm.nombre })}
                   </p>
                   <button 
                     type="button" 
@@ -493,56 +503,56 @@ export default function App() {
                       setContactForm({ nombre: "", proyecto: "", descripcion: "", modelo: "hibrido" });
                     }}
                   >
-                    Enviar otro mensaje
+                    {t("contact.success.button")}
                   </button>
                 </div>
               ) : (
                 <form className="contact-form" onSubmit={handleContactSubmit}>
                   <div className="form-group">
-                    <label htmlFor="nombre">Tu nombre *</label>
+                    <label htmlFor="nombre">{t("contact.form.name")}</label>
                     <input 
                       type="text" 
                       id="nombre" 
-                      placeholder="Ej. Sofía Fernández" 
+                      placeholder={t("contact.form.namePlaceholder")} 
                       required
                       value={contactForm.nombre}
                       onChange={(e) => setContactForm({ ...contactForm, nombre: e.target.value })}
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="proyecto">Nombre del proyecto / startup</label>
+                    <label htmlFor="proyecto">{t("contact.form.project")}</label>
                     <input 
                       type="text" 
                       id="proyecto" 
-                      placeholder="Ej. Aether AI"
+                      placeholder={t("contact.form.projectPlaceholder")}
                       value={contactForm.proyecto}
                       onChange={(e) => setContactForm({ ...contactForm, proyecto: e.target.value })}
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="modelo">Formato de colaboración preferido</label>
+                    <label htmlFor="modelo">{t("contact.form.model")}</label>
                     <select 
                       id="modelo"
                       value={contactForm.modelo}
                       onChange={(e) => setContactForm({ ...contactForm, modelo: e.target.value })}
                     >
-                      <option value="fee">Build for Fee (Presupuesto cerrado)</option>
-                      <option value="equity">Build for Equity (Participación accionaria)</option>
-                      <option value="hibrido">Build Together (Modelo híbrido fee + equity)</option>
+                      <option value="fee">{t("contact.form.optionFee")}</option>
+                      <option value="equity">{t("contact.form.optionEquity")}</option>
+                      <option value="hibrido">{t("contact.form.optionHybrid")}</option>
                     </select>
                   </div>
                   <div className="form-group">
-                    <label htmlFor="descripcion">¿Qué estás construyendo y cómo podemos ayudarte? *</label>
+                    <label htmlFor="descripcion">{t("contact.form.desc")}</label>
                     <textarea 
                       id="descripcion" 
-                      placeholder="Contanos brevemente sobre tu producto, la IA visual que querés incorporar o la etapa actual del SaaS..." 
+                      placeholder={t("contact.form.descPlaceholder")} 
                       required
                       value={contactForm.descripcion}
                       onChange={(e) => setContactForm({ ...contactForm, descripcion: e.target.value })}
                     ></textarea>
                   </div>
                   <button type="submit" className="btn btn-primary" style={{ width: "100%", marginTop: "0.5rem" }}>
-                    Iniciar conversación →
+                    {t("contact.form.submit")}
                   </button>
                 </form>
               )}
@@ -552,10 +562,17 @@ export default function App() {
 
         {/* FOOTER */}
         <footer className="footer">
-          <p>© {new Date().getFullYear()} AURA Studio. Todos los derechos reservados.</p>
+          <p>{t("footer.rights", { year: new Date().getFullYear() })}</p>
           <div className="footer-links">
-            <a href="#productos">Productos</a>
-            <a href="#como-colaboramos">Colaboración</a>
+            <a href="#productos">{t("footer.links.products")}</a>
+            <a href="#como-colaboramos">{t("footer.links.collab")}</a>
+            <a href="#filosofia">{t("footer.links.philosophy")}</a>
+          </div>
+        </footer>
+      </div>
+    </>
+  );
+}aboración</a>
             <a href="#filosofia">Filosofía</a>
           </div>
         </footer>
