@@ -20,7 +20,7 @@
     "db:push": "npm run db:push -w server",
     "db:migrate": "npm run db:migrate -w server",
     "db:studio": "npm run db:studio -w server",
-    "postinstall": "npm run db:generate -w server"
+    "postinstall": "node -e \"if(!process.env.VERCEL){require('child_process').execSync('npm run db:generate -w server',{stdio:'inherit'})}\""
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
