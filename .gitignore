@@ -30,6 +30,7 @@ frontend/dist/
 .prisma/
 
 # OS / IDE
+.vercel/
 .DS_Store
 .idea/
 .vscode/*
@@ -39,3 +40,4 @@ frontend/dist/
 *.tsbuildinfo
 .turbo/
 .cache/
+.vercel
