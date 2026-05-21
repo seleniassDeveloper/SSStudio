@@ -95,7 +95,7 @@ i18n
             title: "¿Hacemos match?",
             yesTitle: "Sí trabajamos juntos si:",
             yes1: "Buscas un socio técnico y de diseño de alto nivel para materializar tu idea.",
-            yes2: "Quieres co-crear un producto interactivo y necesitas dirección estratégica.",
+            yes2: "Quieres crear un producto interactivo y necesitas dirección estratégica.",
             yes3: "Quieres acelerar tu lanzamiento adoptando y personalizando uno de nuestros productos ya hechos.",
             yes4: "Valoras la sensibilidad estética y el software que se siente rápido y fluido.",
             noTitle: "No trabajamos juntos si:",
