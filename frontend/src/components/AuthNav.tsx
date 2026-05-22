@@ -7,7 +7,11 @@ import {
 } from "../lib/firebase";
 import type { User } from "firebase/auth";
 
-export function AuthNav() {
+type AuthNavProps = {
+  onNavigate?: () => void;
+};
+
+export function AuthNav({ onNavigate }: AuthNavProps) {
   const [user, setUser] = useState<User | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -19,6 +23,7 @@ export function AuthNav() {
     setBusy(true);
     try {
       await loginWithGoogle();
+      onNavigate?.();
     } catch {
       alert("No se pudo iniciar sesión");
     } finally {
@@ -30,6 +35,7 @@ export function AuthNav() {
     setBusy(true);
     try {
       await logoutFirebase();
+      onNavigate?.();
     } finally {
       setBusy(false);
     }

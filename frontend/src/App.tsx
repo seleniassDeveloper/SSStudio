@@ -14,7 +14,7 @@ import {
 import { useTheme } from "./hooks/useTheme";
 import { submitLead, trackEvent, analyzeCandleImage } from "./lib/api";
 import { getIdToken } from "./lib/firebase";
-import { AuthNav } from "./components/AuthNav";
+import { Navbar } from "./components/Navbar";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -266,7 +266,7 @@ export default function App() {
 
   if (currentPage === "ceromancia") {
     return (
-      <div className="studio-container" style={{ paddingTop: "2rem" }}>
+      <div className="studio-container demo-page">
         <div className="demo-header-bar">
           <button type="button" className="demo-back-btn" onClick={goHome}>
             {t("demo.back")}
@@ -377,45 +377,7 @@ export default function App() {
   return (
     <>
       <BackgroundBlob hide={currentPage !== "home"} theme={theme} />
-      {/* NAVBAR */}
-      <nav className="navbar">
-        <a href="#inicio" className="logo" onClick={(e) => { e.preventDefault(); window.scrollTo({top: 0, behavior: 'smooth'}); }}>
-          SSS<span>Studio</span>
-        </a>
-        <ul className="nav-links">
-          <li><a href="#servicios">{t("nav.services")}</a></li>
-          <li><a href="#productos">{t("nav.products")}</a></li>
-          <li><a href="#contacto">{t("nav.workWithUs")}</a></li>
-          <li><a href="#contacto" className="nav-btn">{t("nav.cta")}</a></li>
-          <AuthNav />
-          <li>
-            <button
-              type="button"
-              className="theme-toggle"
-              onClick={toggleTheme}
-              aria-label={theme === "dark" ? t("theme.toLight") : t("theme.toDark")}
-              title={theme === "dark" ? t("theme.toLight") : t("theme.toDark")}
-            >
-              {theme === "dark" ? "☀" : "☽"}
-            </button>
-          </li>
-          <li className="lang-switcher">
-            <button 
-              onClick={() => i18n.changeLanguage("es")}
-              className={`lang-btn ${i18n.language.startsWith("es") ? "active" : ""}`}
-            >
-              ES
-            </button>
-            <span className="lang-separator">/</span>
-            <button 
-              onClick={() => i18n.changeLanguage("en")}
-              className={`lang-btn ${i18n.language.startsWith("en") ? "active" : ""}`}
-            >
-              EN
-            </button>
-          </li>
-        </ul>
-      </nav>
+      <Navbar theme={theme} onToggleTheme={toggleTheme} />
 
       <div className="studio-container" id="inicio">
         {/* HERO SECTION */}
