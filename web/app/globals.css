@@ -1,15 +1,20 @@
 :root {
   color-scheme: light;
   
-  /* Color System */
-  --accent: #6C5CE7;
-  --accent-strong: #5646D6;
-  --accent-50: #F3F1FF;
-  --accent-100: #E7E3FF;
-  --accent-border: rgba(108, 92, 231, 0.22);
-  --accent-shadow: rgba(108, 92, 231, 0.1);
-  --accent-soft: rgba(108, 92, 231, 0.1);
-  --accent-soft-2: rgba(108, 92, 231, 0.06);
+  /* Color System: Blanco Principal + Verde Principal + Púrpura Secundario */
+  --accent: #10B981;
+  --accent-strong: #059669;
+  --accent-50: #ECFDF5;
+  --accent-100: #D1FAE5;
+  --accent-border: rgba(16, 185, 129, 0.22);
+  --accent-shadow: rgba(16, 185, 129, 0.12);
+  --accent-soft: rgba(16, 185, 129, 0.1);
+  --accent-soft-2: rgba(16, 185, 129, 0.06);
+
+  /* Púrpura Secundario sutil */
+  --accent-purple: #8B5CF6;
+  --purple-50: #F5F3FF;
+  --purple-soft: rgba(139, 92, 246, 0.1);
 
   /* Acentos de apoyo */
   --c-teal: #0E9F9A;   --c-teal-bg: #E6F7F6;
@@ -25,37 +30,37 @@
   --bg: #FFFFFF;
   --panel: #FFFFFF;
   --surface: #FFFFFF;
-  --surface-tint: #FAFAFD;
+  --surface-tint: #F8FAF9;
   --border: rgba(20,18,26,0.10);
   --border-hover: rgba(20,18,26,0.18);
   --shadow: 0 14px 40px rgba(20,18,26,0.07);
 
-  --success: #059669;
+  --success: #10B981;
   --error: #dc2626;
-  --navbar-bg: rgba(253, 253, 253, 0.85);
-  --hero-gradient: linear-gradient(135deg, #111111 10%, #333333 40%, var(--accent) 90%);
-  --bg-glow-1: rgba(109, 93, 252, 0.08);
-  --bg-glow-2: rgba(124, 58, 237, 0.06);
-  --bg-glow-3: rgba(109, 93, 252, 0.04);
-  --blob-1: rgba(109, 93, 252, 0.08);
-  --blob-2: rgba(200, 180, 255, 0.12);
-  --blob-3: rgba(150, 200, 255, 0.08);
-  --accent-soft: rgba(109, 93, 252, 0.1);
-  --accent-soft-2: rgba(109, 93, 252, 0.06);
-  --accent-soft-3: rgba(109, 93, 252, 0.03);
-  --accent-border: rgba(109, 93, 252, 0.25);
-  --accent-shadow: rgba(109, 93, 252, 0.1);
+  --navbar-bg: rgba(255, 255, 255, 0.88);
+  --hero-gradient: linear-gradient(135deg, #111111 10%, #059669 60%, #8B5CF6 95%);
+  --bg-glow-1: rgba(16, 185, 129, 0.08);
+  --bg-glow-2: rgba(139, 92, 246, 0.05);
+  --bg-glow-3: rgba(16, 185, 129, 0.03);
+  --blob-1: rgba(16, 185, 129, 0.08);
+  --blob-2: rgba(139, 92, 246, 0.06);
+  --blob-3: rgba(52, 211, 153, 0.05);
+  --accent-soft: rgba(16, 185, 129, 0.1);
+  --accent-soft-2: rgba(16, 185, 129, 0.06);
+  --accent-soft-3: rgba(16, 185, 129, 0.03);
+  --accent-border: rgba(16, 185, 129, 0.22);
+  --accent-shadow: rgba(16, 185, 129, 0.1);
   --surface-hover: rgba(17, 17, 17, 0.04);
   --surface-subtle: rgba(17, 17, 17, 0.02);
   --surface-faint: rgba(17, 17, 17, 0.01);
   --surface-badge: rgba(17, 17, 17, 0.03);
   --input-bg: rgba(17, 17, 17, 0.02);
   --input-bg-focus: rgba(17, 17, 17, 0.04);
-  --btn-primary-hover: #111111;
-  --btn-primary-shadow: rgba(109, 93, 252, 0.2);
+  --btn-primary-hover: #047857;
+  --btn-primary-shadow: rgba(16, 185, 129, 0.25);
   --card-shadow: rgba(17, 17, 17, 0.04);
   --service-gradient-end: rgba(253, 253, 253, 0.2);
-  --success-bg: rgba(5, 150, 105, 0.1);
+  --success-bg: rgba(16, 185, 129, 0.1);
   --error-bg: rgba(220, 38, 38, 0.08);
   --lang-bg: rgba(17, 17, 17, 0.04);
   --lang-border: rgba(17, 17, 17, 0.1);
@@ -68,13 +73,14 @@
 html[data-theme="dark"] {
   color-scheme: dark;
 
-  /* Color System */
-  --accent: #A29BFE;
-  --accent-strong: #8176F2;
-  --accent-50: rgba(162, 155, 254, 0.15);
-  --accent-100: rgba(162, 155, 254, 0.25);
-  --accent-border: rgba(162, 155, 254, 0.3);
-  --accent-shadow: rgba(108, 92, 231, 0.3);
+  /* Color System Dark */
+  --accent: #34D399;
+  --accent-strong: #10B981;
+  --accent-50: rgba(52, 211, 153, 0.15);
+  --accent-100: rgba(52, 211, 153, 0.25);
+  --accent-border: rgba(52, 211, 153, 0.3);
+  --accent-shadow: rgba(16, 185, 129, 0.3);
+  --accent-purple: #A78BFA;
 
   /* Acentos de apoyo */
   --c-teal: #2DD4BF;   --c-teal-bg: rgba(45, 212, 191, 0.12);
@@ -2142,7 +2148,7 @@ label {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #6C5CE7;
+  background: #10B981;
 }
 .hero-h1-new {
   font-size: clamp(1.65rem, 2.8vw, 2.4rem) !important;
@@ -2233,7 +2239,7 @@ label {
 }
 
 .text-gradient-purple {
-  background: linear-gradient(90deg, #6C5CE7, #A29BFE);
+  background: linear-gradient(90deg, #10B981 0%, #8B5CF6 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -2345,8 +2351,8 @@ label {
   align-items: center;
   justify-content: center;
   font-size: 1.4rem;
-  background: rgba(108, 92, 231, 0.12) !important;
-  color: #6C5CE7 !important;
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #10B981 !important;
   flex-shrink: 0;
 }
 @media (max-width: 1024px) {
