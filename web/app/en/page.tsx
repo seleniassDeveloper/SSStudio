@@ -98,57 +98,57 @@ export default function EnHomePage() {
           </div>
 
           <div className="wwd-grid">
-            <Link href="/en/consultoria-ia" className="wwd-item-row" style={{ textDecoration: "none" }}>
-              <div className="wwd-icon-box">🧠</div>
-              <div className="wwd-content">
+            <Link href="/en/consultoria-ia" className="wwd-item">
+              <div className="wwd-item-header">
+                <div className="wwd-icon">🧠</div>
                 <h3>AI Consulting</h3>
-                <p>Process auditing and technical AI architecture design with measurable ROI.</p>
               </div>
+              <p>Process auditing and technical AI architecture design with measurable ROI.</p>
               <div className="wwd-line"></div>
             </Link>
 
-            <Link href="/en/automatizacion-de-procesos-con-ia" className="wwd-item-row" style={{ textDecoration: "none" }}>
-              <div className="wwd-icon-box">⚡</div>
-              <div className="wwd-content">
+            <Link href="/en/automatizacion-de-procesos-con-ia" className="wwd-item">
+              <div className="wwd-item-header">
+                <div className="wwd-icon">⚡</div>
                 <h3>Process Automation</h3>
-                <p>Replacing repetitive manual workflows with automated n8n & LLM pipelines.</p>
               </div>
+              <p>Replacing repetitive manual workflows with automated n8n & LLM pipelines.</p>
               <div className="wwd-line"></div>
             </Link>
 
-            <Link href="/en/agentes-de-ia" className="wwd-item-row" style={{ textDecoration: "none" }}>
-              <div className="wwd-icon-box">🤖</div>
-              <div className="wwd-content">
+            <Link href="/en/agentes-de-ia" className="wwd-item">
+              <div className="wwd-item-header">
+                <div className="wwd-icon">🤖</div>
                 <h3>AI Agents</h3>
-                <p>Autonomous agents connected to your databases and corporate tools.</p>
               </div>
+              <p>Autonomous agents connected to your databases and corporate tools.</p>
               <div className="wwd-line"></div>
             </Link>
 
-            <Link href="/en/software-a-medida" className="wwd-item-row" style={{ textDecoration: "none" }}>
-              <div className="wwd-icon-box">💻</div>
-              <div className="wwd-content">
+            <Link href="/en/software-a-medida" className="wwd-item">
+              <div className="wwd-item-header">
+                <div className="wwd-icon">💻</div>
                 <h3>Custom Software</h3>
-                <p>Proprietary SaaS platforms without recurring per-user licensing fees.</p>
               </div>
+              <p>Proprietary SaaS platforms without recurring per-user licensing fees.</p>
               <div className="wwd-line"></div>
             </Link>
 
-            <Link href="/en/integraciones-crm-erp" className="wwd-item-row" style={{ textDecoration: "none" }}>
-              <div className="wwd-icon-box">🔗</div>
-              <div className="wwd-content">
+            <Link href="/en/integraciones-crm-erp" className="wwd-item">
+              <div className="wwd-item-header">
+                <div className="wwd-icon">🔗</div>
                 <h3>CRM & ERP Integrations</h3>
-                <p>Seamless connection of systems, APIs, payment gateways, and data sync.</p>
               </div>
+              <p>Seamless connection of systems, APIs, payment gateways, and data sync.</p>
               <div className="wwd-line"></div>
             </Link>
 
-            <Link href="/en/dashboards-y-reportes" className="wwd-item-row" style={{ textDecoration: "none" }}>
-              <div className="wwd-icon-box">📊</div>
-              <div className="wwd-content">
+            <Link href="/en/dashboards-y-reportes" className="wwd-item">
+              <div className="wwd-item-header">
+                <div className="wwd-icon">📊</div>
                 <h3>Dashboards & Reporting</h3>
-                <p>Real-time Business Intelligence with algorithmic anomaly detection.</p>
               </div>
+              <p>Real-time Business Intelligence with algorithmic anomaly detection.</p>
               <div className="wwd-line"></div>
             </Link>
           </div>
