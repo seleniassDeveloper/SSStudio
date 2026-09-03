@@ -2151,10 +2151,22 @@ label {
   max-width: 680px;
 }
 
-.hero-right {
-  flex: 1;
+.hero-metrics-row {
   display: flex;
-  justify-content: flex-end;
+  gap: 2.5rem;
+  margin-top: 2rem;
+}
+
+.hero-metrics-row > div {
+  max-width: 170px;
+}
+
+.hero-metrics-row span {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.35;
+  white-space: normal;
 }
 
 .hero-image-banner {
