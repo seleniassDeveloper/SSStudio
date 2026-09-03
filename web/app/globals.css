@@ -2181,10 +2181,12 @@ label {
   display: flex;
   gap: 2.5rem;
   margin-top: 2rem;
+  flex-wrap: wrap;
 }
 
 .hero-metrics-row > div {
-  max-width: 170px;
+  max-width: none;
+  min-width: max-content;
 }
 
 .hero-metrics-row span {
@@ -2192,7 +2194,7 @@ label {
   font-size: 0.85rem;
   color: var(--muted);
   line-height: 1.35;
-  white-space: normal;
+  white-space: nowrap;
 }
 
 .hero-image-banner {
