@@ -37,7 +37,7 @@ export default function Home() {
             </div>
 
             <h1 className="hero-h1-new">
-              Reemplacé Jira para 820 personas en 17 países. Ahora construyo esos sistemas para tu empresa.
+              Reemplacé Jira para 820 personas en 17 países. <span className="text-gradient-purple">Ahora construyo esos sistemas para tu empresa.</span>
             </h1>
 
             <p className="hero-p-new">

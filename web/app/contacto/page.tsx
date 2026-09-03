@@ -37,7 +37,7 @@ export default function ContactoPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(contactSchema) }}
       />
       <Navbar />
-      <main className="studio-container" style={{ paddingTop: "6rem", maxWidth: "900px" }}>
+      <main className="studio-container" style={{ paddingTop: "8.5rem", paddingBottom: "4rem", maxWidth: "1100px", margin: "0 auto" }}>
         <header className="section-header">
           <span className="section-tag">Contacto Directo B2B</span>
           <h1>Contame qué proceso querés mejorar</h1>

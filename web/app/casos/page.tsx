@@ -59,7 +59,7 @@ export default function CasosPage() {
   return (
     <>
       <Navbar />
-      <main className="studio-container" style={{ paddingTop: "6rem", maxWidth: "950px" }}>
+      <main className="studio-container" style={{ paddingTop: "8.5rem", paddingBottom: "4rem", maxWidth: "1000px", margin: "0 auto" }}>
         <header className="section-header">
           <span className="section-tag">Credenciales y Proyectos</span>
           <h1>Sistemas que ya construí</h1>
