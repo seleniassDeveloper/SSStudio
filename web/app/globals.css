@@ -2202,19 +2202,18 @@ label {
 
 .hero-image-banner {
   max-width: 1200px;
-  max-height: 380px;
-  margin: 3rem auto;
-  border-radius: 20px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+  margin: 3.5rem auto;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  overflow: visible !important;
 }
 
 .hero-image-banner img {
   width: 100%;
-  height: 380px;
-  object-fit: cover;
-  object-position: center;
+  height: auto;
+  object-fit: contain;
+  display: block;
 }
 
 @media (max-width: 1024px) {

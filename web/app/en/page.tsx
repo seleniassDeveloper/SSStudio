@@ -75,7 +75,7 @@ export default function EnHomePage() {
         </section>
 
         {/* HERO IMAGE OPTIMIZED */}
-        <section className="hero-image-banner" style={{ margin: "3.5rem 0", borderRadius: "24px", overflow: "hidden", border: "1px solid var(--border)", boxShadow: "0 25px 60px rgba(0,0,0,0.08)" }}>
+        <section className="hero-image-banner" style={{ margin: "3rem auto" }}>
           <Image
             src="/ssstudio_hero_dashboard.png"
             alt="SSSTUDIO AI Consulting & Software Engineering Platform Dashboard"
@@ -83,7 +83,7 @@ export default function EnHomePage() {
             height={900}
             priority
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
-            style={{ width: "100%", height: "auto", objectFit: "cover" }}
+            style={{ width: "100%", height: "auto" }}
           />
         </section>
 
