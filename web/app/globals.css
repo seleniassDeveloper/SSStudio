@@ -2201,19 +2201,20 @@ label {
 }
 
 .hero-image-banner {
-  max-width: 1200px;
-  margin: 3.5rem auto;
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  overflow: visible !important;
+  max-width: 900px !important;
+  margin: 2.5rem auto !important;
+  border-radius: 20px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08) !important;
 }
 
 .hero-image-banner img {
   width: 100%;
   height: auto;
-  object-fit: contain;
+  object-fit: cover;
   display: block;
+  border-radius: 20px;
 }
 
 @media (max-width: 1024px) {
