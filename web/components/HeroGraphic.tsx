@@ -91,7 +91,7 @@ export function HeroGraphic() {
               <div className="chart-header">
                 <h4>Rendimiento Operativo</h4>
               </div>
-              <div className="chart-body">
+              <div className="chart-body" style={{ position: "relative" }}>
                 <svg viewBox="0 0 400 150" className="mock-chart-svg">
                   <path d="M 0 130 C 50 130, 80 110, 100 100 C 130 80, 160 90, 200 60 C 230 40, 270 50, 300 30 C 330 10, 370 20, 400 0" 
                         fill="none" stroke="#6C5CE7" strokeWidth="3" />
@@ -99,11 +99,11 @@ export function HeroGraphic() {
                   <circle cx="200" cy="60" r="4" fill="#6C5CE7" />
                   <circle cx="300" cy="30" r="4" fill="#6C5CE7" />
                   <circle cx="400" cy="0" r="4" fill="#6C5CE7" />
-                  <div className="chart-tooltip" style={{ left: "280px", top: "10px" }}>
-                    <span>2026</span>
-                    <strong>+34% ROI</strong>
-                  </div>
                 </svg>
+                <div className="chart-tooltip" style={{ position: "absolute", left: "280px", top: "10px" }}>
+                  <span>2026</span>
+                  <strong>+34% ROI</strong>
+                </div>
                 <div className="chart-x-axis">
                   <span>Ene</span><span>Feb</span><span>Mar</span><span>Abr</span><span>May</span><span>Jun</span>
                 </div>
