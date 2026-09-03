@@ -53,18 +53,18 @@ export default function Home() {
               </Link>
             </div>
 
-            <div className="hero-metrics-row" style={{ display: "flex", gap: "2rem", marginTop: "2.5rem" }}>
+            <div className="hero-metrics-row">
               <div>
-                <strong style={{ fontSize: "1.8rem", color: "var(--accent)", display: "block" }}>820+</strong>
-                <span style={{ fontSize: "0.85rem", color: "var(--muted)" }}>Usuarios en 17 países</span>
+                <strong style={{ fontSize: "1.55rem", color: "var(--accent)", display: "block" }}>820+</strong>
+                <span>Usuarios en 17 países</span>
               </div>
               <div>
-                <strong style={{ fontSize: "1.8rem", color: "var(--accent)", display: "block" }}>380+</strong>
-                <span style={{ fontSize: "0.85rem", color: "var(--muted)" }}>Flujos configurados</span>
+                <strong style={{ fontSize: "1.55rem", color: "var(--accent)", display: "block" }}>380+</strong>
+                <span>Flujos configurados</span>
               </div>
               <div>
-                <strong style={{ fontSize: "1.8rem", color: "var(--accent)", display: "block" }}>~$300k+</strong>
-                <span style={{ fontSize: "0.85rem", color: "var(--muted)" }}>Ahorrados en licencias</span>
+                <strong style={{ fontSize: "1.55rem", color: "var(--accent)", display: "block" }}>~$300k+</strong>
+                <span>Ahorrados en licencias</span>
               </div>
             </div>
           </div>
@@ -75,12 +75,12 @@ export default function Home() {
         </section>
 
         {/* HERO IMAGE OPTIMIZED */}
-        <section className="hero-image-banner" style={{ margin: "4rem 0", borderRadius: "24px", overflow: "hidden", border: "1px solid var(--border)" }}>
+        <section className="hero-image-banner" style={{ margin: "3.5rem 0", borderRadius: "24px", overflow: "hidden", border: "1px solid var(--border)", boxShadow: "0 25px 60px rgba(0,0,0,0.08)" }}>
           <Image
-            src="/hero_stairs.png"
-            alt="Infraestructura y arquitectura de software con Inteligencia Artificial"
-            width={1200}
-            height={600}
+            src="/ssstudio_hero_dashboard.png"
+            alt="Plataforma y Dashboard SSSTUDIO AI Consulting & Software Engineering"
+            width={1400}
+            height={900}
             priority
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
             style={{ width: "100%", height: "auto", objectFit: "cover" }}

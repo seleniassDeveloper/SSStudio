@@ -2178,20 +2178,23 @@ label {
 }
 
 .hero-metrics-row {
-  display: flex;
-  gap: 2.5rem;
-  margin-top: 2rem;
-  flex-wrap: wrap;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: flex-start !important;
+  gap: 1.5rem !important;
+  margin-top: 2rem !important;
 }
 
 .hero-metrics-row > div {
-  max-width: none;
-  min-width: max-content;
+  max-width: none !important;
+  min-width: auto !important;
+  flex-shrink: 0 !important;
 }
 
 .hero-metrics-row span {
   display: block;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--muted);
   line-height: 1.35;
   white-space: nowrap;
