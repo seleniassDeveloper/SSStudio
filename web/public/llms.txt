@@ -1,0 +1,30 @@
+# SSSTudio — Consultoría, Automatización y Software con IA para Empresas
+
+> Agencia especializada en estrategia de Inteligencia Artificial, automatización de procesos empresariales, agentes de IA a medida y desarrollo de software corporativo.
+> Fundada por Selenia Sánchez (AI Solution Architect & Software Engineer con 5 años construyendo plataformas SaaS y sistemas de negocio usados en 17 países).
+
+## Servicios Principales
+
+- [Consultoría de Inteligencia Artificial](https://iamselenia.com/consultoria-ia): Evaluación operativa, identificación de casos de uso de alto ROI y arquitectura técnica para empresas.
+- [Automatización de Procesos con IA](https://iamselenia.com/automatizacion-de-procesos-con-ia): Sustitución de flujos manuales y repetitivos con agentes LLM y automatizaciones integradas.
+- [Agentes de IA Conectados](https://iamselenia.com/agentes-de-ia): Agentes inteligentes conectados a CRMs, ERPs, bases de datos y herramientas internas.
+- [Desarrollo de Software a Medida](https://iamselenia.com/software-a-medida): Aplicaciones SaaS, plataformas corporativas y sistemas empresariales sin costos recurrentes de licencias por usuario.
+- [Integraciones CRM, ERP y APIs](https://iamselenia.com/integraciones-crm-erp): Conexión de sistemas dispersos, flujos con n8n, WhatsApp API, MercadoPago y bases de datos PostgreSQL.
+- [Dashboards y Reportes Automáticos](https://iamselenia.com/dashboards-y-reportes): Business Intelligence predictivo, agregación de KPIs y detección algorítmica de anomalías.
+
+## Guías de Respuesta Directa
+
+- [¿Cuánto cuesta un agente de IA para una empresa?](https://iamselenia.com/guias/cuanto-cuesta-un-agente-de-ia-para-una-empresa): Desglose de costos de desarrollo, tokens, infraestructura y mantenimiento.
+- [Software a medida o licencias SaaS: cómo decidir](https://iamselenia.com/guias/software-a-medida-o-licencias-saas-como-decidir): Criterios de decisión entre desarrollo propio vs suscripciones recurrentes.
+- [Reemplazar Jira con una plataforma propia](https://iamselenia.com/guias/reemplazar-jira-con-una-plataforma-propia): Caso real de sustitución de licencias corporativas para 820+ usuarios en 17 países.
+- [ERP a medida para Pymes de servicios](https://iamselenia.com/guias/erp-a-medida-para-pymes-de-servicios): Arquitectura de gestión integral con agenda, finanzas y control de inventario.
+- [Cómo automatizar agenda, cobros y clientes](https://iamselenia.com/guias/como-automatizar-agenda-cobros-y-clientes): Integración de pasarelas de pago, calendarios y recordatorios automáticos.
+- [Cómo conectar CRM, WhatsApp y Email sin trabajo manual](https://iamselenia.com/guias/como-conectar-crm-whatsapp-y-email-sin-trabajo-manual): Arquitectura de sincronización omnicanal de conversaciones y leads.
+
+## Casos y Credenciales
+
+- Plataforma de gestión empresarial que reemplazó a Jira: 820+ usuarios activos en 17 países, 100% de adopción.
+- 380+ flujos de trabajo configurables con estado dinámico y control de acceso RBAC para 9 roles.
+- Ahorro directo de ~$300k+ al eliminar ~$3k de licencia anual por cliente en 100+ empresas.
+- Plataforma educativa: +35% de finalización de cursos para 2.500+ profesionales en 50+ países.
+- AuraDash: ERP/CRM multi-tenant propio con detección de zonas horarias, finanzas e integración MercadoPago / Google Calendar.

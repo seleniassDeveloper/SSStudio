@@ -1,0 +1,18 @@
+export const ROUTES = [
+  "",
+  "en",
+  "consultoria-ia",
+  "automatizacion-de-procesos-con-ia",
+  "agentes-de-ia",
+  "software-a-medida",
+  "integraciones-crm-erp",
+  "dashboards-y-reportes",
+  "casos",
+  "contacto",
+  "guias/cuanto-cuesta-un-agente-de-ia-para-una-empresa",
+  "guias/software-a-medida-o-licencias-saas-como-decidir",
+  "guias/reemplazar-jira-con-una-plataforma-propia",
+  "guias/erp-a-medida-para-pymes-de-servicios",
+  "guias/como-automatizar-agenda-cobros-y-clientes",
+  "guias/como-conectar-crm-whatsapp-y-email-sin-trabajo-manual",
+] as const;

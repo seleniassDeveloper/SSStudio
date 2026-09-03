@@ -41,3 +41,5 @@ frontend/dist/
 .turbo/
 .cache/
 .vercel
+web/.next/
+*.timestamp-*.mjs
