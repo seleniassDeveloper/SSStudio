@@ -77,7 +77,7 @@ export default function Home() {
         {/* HERO IMAGE OPTIMIZED */}
         <section className="hero-image-banner" style={{ margin: "3rem auto" }}>
           <Image
-            src="/ssstudio_dashboard_real.png"
+            src="/paginassstudio.png"
             alt="Plataforma y Dashboard SSSTUDIO AI Consulting & Software Engineering"
             width={1400}
             height={900}
