@@ -8,7 +8,7 @@ import { SmoothScroll } from "@/components/SmoothScroll";
 import { HeroGraphic } from "@/components/HeroGraphic";
 
 export const metadata: Metadata = {
-  title: "AI Consulting, Process Automation & Custom Software for Companies",
+  title: "AI Consulting & Custom Software for Companies",
   description:
     "We analyze your business operations and build tailored AI solutions: process automation, AI agents, API integrations, and custom software. 5 years building platforms used in 17 countries.",
   alternates: {
@@ -37,11 +37,11 @@ export default function EnHomePage() {
             </div>
 
             <h1 className="hero-h1-new">
-              I replaced Jira for 820 users across 17 countries. <span className="text-gradient-purple">Now I build those systems for your company.</span>
+              Custom software and AI <span className="text-gradient-purple">for processes that can&apos;t keep up</span>
             </h1>
 
             <p className="hero-p-new">
-              AI consulting, process automation, and custom software. We analyze your operation first and choose the right technology second.
+              I replaced Jira for 820 users across 17 countries and saved ~$300k in licensing. Now I build those systems for your company.
             </p>
 
             <div className="hero-ctas-row" style={{ display: "flex", gap: "1rem", flexWrap: "wrap", margin: "2rem 0" }}>

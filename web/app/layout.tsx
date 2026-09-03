@@ -14,7 +14,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: "Consultoría, automatización y software con IA para empresas",
+    default: "Consultoría en IA y software a medida para empresas | SSSTudio",
     template: `%s | ${SITE.name}`,
   },
   description:
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_ES",
     siteName: SITE.name,
-    title: "Consultoría, automatización y software con IA para empresas",
+    title: "Consultoría en IA y software a medida para empresas | SSSTudio",
     description:
       "Analizamos tus procesos y construimos la tecnología que los resuelve: automatización, agentes de IA, integraciones y software a medida.",
   },

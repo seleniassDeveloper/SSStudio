@@ -8,7 +8,7 @@ import { SmoothScroll } from "@/components/SmoothScroll";
 import { HeroGraphic } from "@/components/HeroGraphic";
 
 export const metadata: Metadata = {
-  title: "Consultoría, automatización y software con IA para empresas",
+  title: "Consultoría en IA y software a medida para empresas | SSSTudio",
   description:
     "Analizamos tus procesos y construimos la tecnología que los resuelve: automatización, agentes de IA, integraciones y software a medida. 5 años construyendo plataformas usadas en 17 países.",
   alternates: {
@@ -37,11 +37,11 @@ export default function Home() {
             </div>
 
             <h1 className="hero-h1-new">
-              Reemplacé Jira para 820 personas en 17 países. <span className="text-gradient-purple">Ahora construyo esos sistemas para tu empresa.</span>
+              Software e IA a medida <span className="text-gradient-purple">para procesos que ya no dan más</span>
             </h1>
 
             <p className="hero-p-new">
-              Consultoría, automatización y software a medida con IA. Analizamos el proceso primero y después elegimos la tecnología.
+              Reemplacé Jira para 820 personas en 17 países y ahorré ~$300k en licencias. Ahora construyo esos sistemas para tu empresa.
             </p>
 
             <div className="hero-ctas-row" style={{ display: "flex", gap: "1rem", flexWrap: "wrap", margin: "2rem 0" }}>
