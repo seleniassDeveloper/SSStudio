@@ -2119,12 +2119,12 @@ label {
   background: #6C5CE7;
 }
 .hero-h1-new {
-  font-size: clamp(2rem, 3.5vw, 3.1rem) !important;
+  font-size: clamp(1.65rem, 2.8vw, 2.4rem) !important;
   font-weight: 800 !important;
-  line-height: 1.18 !important;
+  line-height: 1.15 !important;
   letter-spacing: -0.03em !important;
   color: var(--text) !important;
-  margin-bottom: 1.25rem !important;
+  margin-bottom: 0.85rem !important;
   background: none !important;
   -webkit-text-fill-color: initial !important;
 }
@@ -2136,11 +2136,11 @@ label {
   flex-direction: row !important;
   align-items: center !important;
   justify-content: space-between !important;
-  gap: 3rem !important;
+  gap: 2.5rem !important;
   width: 100% !important;
   max-width: 1280px !important;
   margin: 0 auto !important;
-  padding: 7.5rem 2rem 3rem 2rem !important;
+  padding: 3rem 1.5rem 2rem 1.5rem !important;
   text-align: left !important;
   overflow: visible !important;
   background: transparent !important;
@@ -2148,7 +2148,7 @@ label {
 
 .hero-left {
   flex: 1.15;
-  max-width: 620px;
+  max-width: 680px;
 }
 
 .hero-right {

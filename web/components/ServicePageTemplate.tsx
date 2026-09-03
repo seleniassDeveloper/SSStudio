@@ -105,7 +105,7 @@ export function ServicePageTemplate(props: ServicePageProps) {
 
       <Navbar lang={lang} />
 
-      <main className="studio-container service-page" style={{ paddingTop: "8.5rem", paddingBottom: "4rem", maxWidth: "1100px", margin: "0 auto" }}>
+      <main className="studio-container service-page" style={{ paddingTop: "5.5rem", paddingBottom: "3rem", maxWidth: "1100px", margin: "0 auto" }}>
         <header className="section-header" style={{ maxWidth: "850px" }}>
           <span className="section-tag">Servicio Especializado</span>
           <h1>{h1}</h1>

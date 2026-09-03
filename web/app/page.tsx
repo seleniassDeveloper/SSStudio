@@ -29,7 +29,7 @@ export default function Home() {
 
       <main className="studio-container">
         {/* HERO SECTION */}
-        <section id="inicio" className="hero-section hero-layout-split" style={{ paddingTop: "6rem" }}>
+        <section id="inicio" className="hero-section hero-layout-split">
           <div className="hero-left">
             <div className="hero-pill-badge">
               <span className="pill-dot"></span>

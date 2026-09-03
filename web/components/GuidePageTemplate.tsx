@@ -95,7 +95,7 @@ export function GuidePageTemplate(props: GuidePageProps) {
 
       <Navbar lang={lang} />
 
-      <main className="studio-container guide-page" style={{ paddingTop: "8.5rem", paddingBottom: "4rem", maxWidth: "950px", margin: "0 auto" }}>
+      <main className="studio-container guide-page" style={{ paddingTop: "5.5rem", paddingBottom: "3rem", maxWidth: "950px", margin: "0 auto" }}>
         <header className="section-header">
           <span className="section-tag">Guía de Respuesta Directa</span>
           <h1>{h1Question}</h1>
