@@ -1,187 +1,218 @@
 "use client";
 
-import { useRef, useMemo } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { MeshDistortMaterial, Sphere, Environment, Float } from "@react-three/drei";
+import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-function Blob() {
-  const groupRef = useRef<THREE.Group>(null);
-  const materialRef = useRef<any>(null);
-  const nodesRef = useRef<(THREE.Mesh | null)[]>([]);
+export default function BackgroundBlob() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const basePositions = useMemo(
-    () => [
-      [0.85, 0.22, -0.15],
-      [-0.72, -0.35, 0.18],
-      [0.25, 0.72, -0.35],
-      [-0.25, 0.15, -0.65],
-      [0.58, -0.62, 0.12],
-    ],
-    []
-  );
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-  useFrame((state) => {
-    const t = state.clock.getElapsedTime();
-    if (!groupRef.current) return;
+    // 1. Scene, Camera & Renderer
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
+      42,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      100
+    );
+    camera.position.set(0, 0, 4.7);
 
-    // Continuous 3D rotation & ambient floating
-    groupRef.current.rotation.y = Math.sin(t * 0.25) * 0.35 + t * 0.08;
-    groupRef.current.rotation.x = Math.cos(t * 0.2) * 0.18;
-    groupRef.current.rotation.z = Math.sin(t * 0.18) * 0.15;
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      alpha: true,
+      antialias: true,
+      powerPreference: "high-performance",
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // Real-time viewport rect position calculation for exact section transitions:
-    // Hero: x = 1.5, y = -0.05, scale = 1.2
-    // Servicios: x = -1.35, y = -0.05, scale = 1.25
-    // Vision: x = 0.4, y = 0.05, scale = 1.2
-    // Contacto: x = 0.15, y = -0.35, scale = 1.6
-    if (typeof window !== "undefined" && typeof document !== "undefined") {
-      const vh = window.innerHeight;
-      const serviciosEl = document.querySelector("#servicios");
-      const visionEl = document.querySelector("#vision");
-      const contactoEl = document.querySelector("#contacto");
+    // 2. Bright Vibrant Lighting (Purple & Emerald Green)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+    scene.add(ambientLight);
 
-      const sRect = serviciosEl?.getBoundingClientRect();
-      const vRect = visionEl?.getBoundingClientRect();
-      const cRect = contactoEl?.getBoundingClientRect();
+    const dirLight1 = new THREE.DirectionalLight(0xffffff, 2.2);
+    dirLight1.position.set(4, 4, 5);
+    scene.add(dirLight1);
 
-      let targetX = 1.5;
-      let targetY = -0.05;
-      let targetScale = 1.2;
-      let targetDistort = 0.28;
-      let targetSpread = 0.95;
+    const dirLight2 = new THREE.DirectionalLight(0x10b981, 2.5); // Emerald Green Rim Light
+    dirLight2.position.set(-4, -2, 3);
+    scene.add(dirLight2);
 
-      if (cRect && cRect.top < vh) {
-        const progress = Math.min(1, Math.max(0, (vh - cRect.top) / (vh * 0.7)));
-        targetX = 0.4 + (0.15 - 0.4) * progress;
-        targetY = 0.05 + (-0.35 - 0.05) * progress;
-        targetScale = 1.2 + (1.6 - 1.2) * progress;
-        targetDistort = 0.32 + (0.45 - 0.32) * progress;
-        targetSpread = 1.05 + (1.2 - 1.05) * progress;
-      } else if (vRect && vRect.top < vh) {
-        const progress = Math.min(1, Math.max(0, (vh - vRect.top) / (vh * 0.7)));
-        targetX = -1.35 + (0.4 - (-1.35)) * progress;
-        targetY = -0.05 + (0.05 - (-0.05)) * progress;
-        targetScale = 1.25 + (1.2 - 1.25) * progress;
-        targetDistort = 0.3 + (0.32 - 0.3) * progress;
-        targetSpread = 1.35 + (1.05 - 1.35) * progress;
-      } else if (sRect && sRect.top < vh) {
-        const progress = Math.min(1, Math.max(0, (vh - sRect.top) / (vh * 0.7)));
-        targetX = 1.5 + (-1.35 - 1.5) * progress;
-        targetY = -0.05;
-        targetScale = 1.2 + (1.25 - 1.2) * progress;
-        targetDistort = 0.28 + (0.3 - 0.28) * progress;
-        targetSpread = 0.95 + (1.35 - 0.95) * progress;
+    const pointLight1 = new THREE.PointLight(0x8b5cf6, 3.5, 15); // Electric Purple Light
+    pointLight1.position.set(0, 1.8, 2);
+    scene.add(pointLight1);
+
+    const pointLight2 = new THREE.PointLight(0x34d399, 3.0, 15); // Mint Green Light
+    pointLight2.position.set(3, -2, 2);
+    scene.add(pointLight2);
+
+    // 3. 3D Objects Setup
+    const mainGroup = new THREE.Group();
+    scene.add(mainGroup);
+
+    // Central Sphere (Vibrant Electric Purple)
+    const mainGeo = new THREE.IcosahedronGeometry(0.78, 12);
+    const mainMat = new THREE.MeshPhysicalMaterial({
+      color: 0x8b5cf6,
+      emissive: 0x3b0764,
+      emissiveIntensity: 0.4,
+      roughness: 0.18,
+      metalness: 0.15,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.05,
+    });
+    const mainSphere = new THREE.Mesh(mainGeo, mainMat);
+    mainGroup.add(mainSphere);
+
+    // Satellite Spheres (Alternating Emerald Green & Lavender Purple)
+    const basePositions = [
+      { x: 0.85, y: 0.22, z: -0.15, size: 0.36 },
+      { x: -0.72, y: -0.35, z: 0.18, size: 0.48 },
+      { x: 0.25, y: 0.72, z: -0.35, size: 0.36 },
+      { x: -0.25, y: 0.15, z: -0.65, size: 0.36 },
+      { x: 0.58, y: -0.62, z: 0.12, size: 0.28 },
+    ];
+
+    const satMeshes: THREE.Mesh[] = [];
+
+    basePositions.forEach((pos, idx) => {
+      const geo = new THREE.IcosahedronGeometry(pos.size, 8);
+      const isGreen = idx % 2 === 0;
+      const mat = new THREE.MeshPhysicalMaterial({
+        color: isGreen ? 0x10b981 : 0xa78bfa,
+        emissive: isGreen ? 0x064e3b : 0x4c1d95,
+        emissiveIntensity: 0.35,
+        roughness: 0.15,
+        metalness: 0.15,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.05,
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.set(pos.x, pos.y, pos.z);
+      mainGroup.add(mesh);
+      satMeshes.push(mesh);
+    });
+
+    // Save initial vertex positions for CPU wave deformation
+    const mainPosAttr = mainGeo.attributes.position;
+    const initialMainPositions = mainPosAttr.array.slice();
+
+    // 4. Smooth Lerp State
+    let currentX = 1.15;
+    let currentY = -0.05;
+    let currentScale = 1.05;
+    let currentSpread = 0.95;
+
+    // 5. Native Render Loop (60 FPS Guaranteed)
+    let animationFrameId: number;
+    let clock = new THREE.Clock();
+
+    const animate = () => {
+      animationFrameId = requestAnimationFrame(animate);
+      const elapsedTime = clock.getElapsedTime();
+
+      // CPU Wave Deformation for Organic Blob Distortion
+      const posArray = mainPosAttr.array as Float32Array;
+      for (let i = 0; i < posArray.length; i += 3) {
+        const vx = initialMainPositions[i];
+        const vy = initialMainPositions[i + 1];
+        const vz = initialMainPositions[i + 2];
+        const wave = Math.sin(vx * 2.5 + elapsedTime * 2.0) * Math.cos(vy * 2.5 + elapsedTime * 1.8) * 0.08;
+        posArray[i] = vx + vx * wave;
+        posArray[i + 1] = vy + vy * wave;
+        posArray[i + 2] = vz + vz * wave;
       }
+      mainPosAttr.needsUpdate = true;
+      mainGeo.computeVertexNormals();
 
-      // Calculate scroll Y progress for continuous rotation
-      const scrollY = window.scrollY || window.pageYOffset || 0;
+      // Scroll Position Tracking
+      const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
       const docHeight = (document.documentElement.scrollHeight - window.innerHeight) || 1;
       const scrollProgress = Math.min(1, Math.max(0, scrollY / docHeight));
 
-      // Lerp group position and scale smoothly at 60fps
-      groupRef.current.position.x += (targetX - groupRef.current.position.x) * 0.12;
-      groupRef.current.position.y += (targetY - groupRef.current.position.y) * 0.12;
+      // Calculate Target Position safely within bounds
+      let targetX = 1.15;
+      let targetY = -0.05;
+      let targetScale = 1.05;
+      let targetSpread = 0.95;
 
-      const currentScale = groupRef.current.scale.x;
-      const lerpedScale = currentScale + (targetScale - currentScale) * 0.12;
-      groupRef.current.scale.set(lerpedScale, lerpedScale, lerpedScale);
-
-      if (materialRef.current) {
-        materialRef.current.distort += (targetDistort - materialRef.current.distort) * 0.12;
+      if (scrollProgress < 0.30) {
+        const p = scrollProgress / 0.30;
+        const easeP = 0.5 - Math.cos(p * Math.PI) / 2;
+        targetX = 1.15 + (-0.50 - 1.15) * easeP;
+        targetY = -0.05 + (-0.08 - (-0.05)) * easeP;
+        targetScale = 1.05 + (1.15 - 1.05) * easeP;
+        targetSpread = 0.95 + (1.10 - 0.95) * easeP;
+      } else if (scrollProgress < 0.70) {
+        const p = (scrollProgress - 0.30) / 0.40;
+        const easeP = 0.5 - Math.cos(p * Math.PI) / 2;
+        targetX = -0.50 + (0.55 - (-0.50)) * easeP;
+        targetY = -0.08 + (0.05 - (-0.08)) * easeP;
+        targetScale = 1.15 + (1.08 - 1.15) * easeP;
+        targetSpread = 1.10 + (0.95 - 1.10) * easeP;
+      } else {
+        const p = (scrollProgress - 0.70) / 0.30;
+        const easeP = 0.5 - Math.cos(p * Math.PI) / 2;
+        targetX = 0.55 + (0.00 - 0.55) * easeP;
+        targetY = 0.05 + (-0.20 - 0.05) * easeP;
+        targetScale = 1.08 + (1.35 - 1.08) * easeP;
+        targetSpread = 0.95 + (1.15 - 0.95) * easeP;
       }
 
-      // Continuous 3D rotation & ambient floating + scroll tilt
-      groupRef.current.rotation.y = Math.sin(t * 0.25) * 0.35 + t * 0.12 + scrollProgress * Math.PI * 1.5;
-      groupRef.current.rotation.x = Math.cos(t * 0.2) * 0.18 + Math.sin(scrollProgress * Math.PI) * 0.3;
-      groupRef.current.rotation.z = Math.sin(t * 0.18) * 0.15;
+      // Smooth Lerp Group Position & Scale
+      currentX += (targetX - currentX) * 0.08;
+      currentY += (targetY - currentY) * 0.08;
+      currentScale += (targetScale - currentScale) * 0.08;
+      currentSpread += (targetSpread - currentSpread) * 0.08;
 
-      // Active 3D orbital revolution of satellite spheres around central blob
-      nodesRef.current.forEach((node, i) => {
-        if (!node) return;
-        const orbitAngle = t * (0.45 + (i % 3) * 0.18) + (i * Math.PI * 2) / 5 + scrollProgress * Math.PI;
-        const radius = targetSpread;
+      mainGroup.position.set(currentX, currentY, 0);
+      mainGroup.scale.set(currentScale, currentScale, currentScale);
 
-        node.position.set(
-          Math.cos(orbitAngle) * (0.85 + (i % 2) * 0.25) * radius,
-          Math.sin(t * 1.2 + i * 1.5) * 0.25 * radius,
-          Math.sin(orbitAngle) * (0.85 + (i % 2) * 0.25) * radius
-        );
+      // Continuous 3D Ambient Float & Rotation
+      mainGroup.rotation.y = Math.sin(elapsedTime * 0.3) * 0.35 + elapsedTime * 0.15 + scrollProgress * Math.PI * 1.5;
+      mainGroup.rotation.x = Math.cos(elapsedTime * 0.25) * 0.2 + Math.sin(scrollProgress * Math.PI) * 0.25;
+      mainGroup.rotation.z = Math.sin(elapsedTime * 0.2) * 0.15;
+
+      // Active 3D Orbital Revolution of Satellite Spheres
+      satMeshes.forEach((mesh, idx) => {
+        const base = basePositions[idx];
+        const orbitAngle = elapsedTime * (0.55 + (idx % 3) * 0.2) + (idx * Math.PI * 2) / 5 + scrollProgress * Math.PI;
+        const radius = Math.sqrt(base.x * base.x + base.z * base.z) * currentSpread * 1.2;
+
+        mesh.position.x = Math.cos(orbitAngle) * radius;
+        mesh.position.z = Math.sin(orbitAngle) * radius;
+        mesh.position.y = base.y * currentSpread + Math.sin(elapsedTime * 1.4 + idx * 1.5) * 0.2;
       });
-    }
-  });
 
-  return (
-    <Float speed={2.0} rotationIntensity={0.5} floatIntensity={0.8}>
-      <group ref={groupRef}>
-        <Sphere args={[0.78, 96, 96]} position={[0, 0, 0]}>
-          <MeshDistortMaterial
-            ref={materialRef}
-            color="#3b0b82"
-            distort={0.28}
-            speed={1.1}
-            roughness={0.08}
-            metalness={0.75}
-            clearcoat={1}
-            clearcoatRoughness={0.08}
-            envMapIntensity={1.6}
-          />
-        </Sphere>
+      renderer.render(scene, camera);
+    };
 
-        {basePositions.map((position, index) => (
-          <Sphere
-            key={index}
-            ref={(el) => {
-              nodesRef.current[index] = el;
-            }}
-            args={[
-              index === 1 ? 0.48 : index === 4 ? 0.28 : 0.36,
-              64,
-              64,
-            ]}
-            position={position as [number, number, number]}
-          >
-            <MeshDistortMaterial
-              color="#2a0066"
-              distort={0.35}
-              speed={1.4}
-              roughness={0.1}
-              metalness={0.8}
-              clearcoat={1}
-              clearcoatRoughness={0.08}
-              envMapIntensity={1.5}
-            />
-          </Sphere>
-        ))}
-      </group>
-    </Float>
-  );
-}
+    animate();
 
-export default function BackgroundBlob() {
+    // 6. Handle Window Resize
+    const onResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+    window.addEventListener("resize", onResize);
+
+    // 7. Cleanup
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener("resize", onResize);
+      mainGeo.dispose();
+      mainMat.dispose();
+      renderer.dispose();
+    };
+  }, []);
+
   return (
     <div className="background-canvas-container">
-      <Canvas
-        camera={{ position: [0, 0, 4.7], fov: 42 }}
-        dpr={[1, 1.6]}
-        gl={{
-          antialias: true,
-          alpha: true,
-          powerPreference: "high-performance",
-        }}
-      >
-        <ambientLight intensity={0.45} />
-        <directionalLight position={[4, 4, 5]} intensity={1.4} />
-        <directionalLight
-          position={[-4, -2, 3]}
-          intensity={0.45}
-          color="#8b5cf6"
-        />
-        <pointLight position={[0, 1.8, 2]} intensity={1.2} color="#a855f7" />
-
-        <Environment preset="city" />
-        <Blob />
-      </Canvas>
+      <canvas ref={canvasRef} style={{ width: "100%", height: "100%", display: "block" }} />
     </div>
   );
 }
