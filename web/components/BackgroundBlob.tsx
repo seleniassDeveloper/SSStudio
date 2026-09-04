@@ -1,15 +1,9 @@
 "use client";
 
-import { useRef, useEffect, useMemo } from "react";
+import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { MeshDistortMaterial, Sphere, Environment, Float } from "@react-three/drei";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import * as THREE from "three";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 function Blob() {
   const groupRef = useRef<THREE.Group>(null);
@@ -27,112 +21,98 @@ function Blob() {
     []
   );
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      if (!groupRef.current) return;
-
-      const proxy = {
-        distort: 0.28,
-        speed: 1.1,
-        spread: 0.95,
-        envIntensity: 1.6,
-      };
-
-      const updateMaterial = () => {
-        if (!materialRef.current) return;
-        materialRef.current.distort = proxy.distort;
-        materialRef.current.speed = proxy.speed;
-        materialRef.current.envMapIntensity = proxy.envIntensity;
-      };
-
-      gsap.set(groupRef.current.position, { x: 1.5, y: -0.05, z: 0 });
-      gsap.set(groupRef.current.scale, { x: 1.2, y: 1.2, z: 1.2 });
-
-      gsap.fromTo(
-        groupRef.current.position,
-        { x: 2.5, y: 0.25 },
-        { x: 1.5, y: -0.05, duration: 1.8, ease: "power4.out" }
-      );
-
-      gsap.fromTo(
-        groupRef.current.scale,
-        { x: 0.4, y: 0.4, z: 0.4 },
-        { x: 1.2, y: 1.2, z: 1.2, duration: 1.8, ease: "power3.out" }
-      );
-
-      const groupObj = groupRef.current;
-      groupObj.userData.proxy = proxy;
-
-      const sections = [
-        { trigger: "#servicios", x: -1.35, y: -0.05, scale: 1.25, distort: 0.3, spread: 1.35 },
-        { trigger: "#vision", x: 0.4, y: 0.05, scale: 1.2, distort: 0.32, spread: 1.05 },
-        { trigger: "#contacto", x: 0.15, y: -0.35, scale: 1.6, distort: 0.45, spread: 1.2 },
-      ];
-
-      sections.forEach((section) => {
-        if (!document.querySelector(section.trigger)) return;
-
-        gsap
-          .timeline({
-            scrollTrigger: {
-              trigger: section.trigger,
-              start: "top 90%",
-              end: "top 20%",
-              scrub: 1,
-            },
-          })
-          .to(
-            groupObj.position,
-            { x: section.x, y: section.y, duration: 1, ease: "sine.inOut" },
-            0
-          )
-          .to(
-            groupObj.scale,
-            { x: section.scale, y: section.scale, z: section.scale, duration: 1, ease: "sine.inOut" },
-            0
-          )
-          .to(
-            proxy,
-            {
-              distort: section.distort,
-              spread: section.spread,
-              speed: 1.6,
-              envIntensity: 1.8,
-              duration: 1,
-              ease: "sine.inOut",
-              onUpdate: updateMaterial,
-            },
-            0
-          );
-      });
-    });
-
-    return () => ctx.revert();
-  }, []);
-
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
     if (!groupRef.current) return;
 
+    // Continuous 3D rotation & ambient floating
     groupRef.current.rotation.y = Math.sin(t * 0.25) * 0.35 + t * 0.08;
     groupRef.current.rotation.x = Math.cos(t * 0.2) * 0.18;
     groupRef.current.rotation.z = Math.sin(t * 0.18) * 0.15;
 
-    const proxy = groupRef.current.userData.proxy;
-    if (proxy) {
+    // Real-time viewport rect position calculation for exact section transitions:
+    // Hero: x = 1.5, y = -0.05, scale = 1.2
+    // Servicios: x = -1.35, y = -0.05, scale = 1.25
+    // Vision: x = 0.4, y = 0.05, scale = 1.2
+    // Contacto: x = 0.15, y = -0.35, scale = 1.6
+    if (typeof window !== "undefined" && typeof document !== "undefined") {
+      const vh = window.innerHeight;
+      const serviciosEl = document.querySelector("#servicios");
+      const visionEl = document.querySelector("#vision");
+      const contactoEl = document.querySelector("#contacto");
+
+      const sRect = serviciosEl?.getBoundingClientRect();
+      const vRect = visionEl?.getBoundingClientRect();
+      const cRect = contactoEl?.getBoundingClientRect();
+
+      let targetX = 1.5;
+      let targetY = -0.05;
+      let targetScale = 1.2;
+      let targetDistort = 0.28;
+      let targetSpread = 0.95;
+
+      if (cRect && cRect.top < vh) {
+        const progress = Math.min(1, Math.max(0, (vh - cRect.top) / (vh * 0.7)));
+        targetX = 0.4 + (0.15 - 0.4) * progress;
+        targetY = 0.05 + (-0.35 - 0.05) * progress;
+        targetScale = 1.2 + (1.6 - 1.2) * progress;
+        targetDistort = 0.32 + (0.45 - 0.32) * progress;
+        targetSpread = 1.05 + (1.2 - 1.05) * progress;
+      } else if (vRect && vRect.top < vh) {
+        const progress = Math.min(1, Math.max(0, (vh - vRect.top) / (vh * 0.7)));
+        targetX = -1.35 + (0.4 - (-1.35)) * progress;
+        targetY = -0.05 + (0.05 - (-0.05)) * progress;
+        targetScale = 1.25 + (1.2 - 1.25) * progress;
+        targetDistort = 0.3 + (0.32 - 0.3) * progress;
+        targetSpread = 1.35 + (1.05 - 1.35) * progress;
+      } else if (sRect && sRect.top < vh) {
+        const progress = Math.min(1, Math.max(0, (vh - sRect.top) / (vh * 0.7)));
+        targetX = 1.5 + (-1.35 - 1.5) * progress;
+        targetY = -0.05;
+        targetScale = 1.2 + (1.25 - 1.2) * progress;
+        targetDistort = 0.28 + (0.3 - 0.28) * progress;
+        targetSpread = 0.95 + (1.35 - 0.95) * progress;
+      }
+
+      // Calculate scroll Y progress for continuous rotation
+      const scrollY = window.scrollY || window.pageYOffset || 0;
+      const docHeight = (document.documentElement.scrollHeight - window.innerHeight) || 1;
+      const scrollProgress = Math.min(1, Math.max(0, scrollY / docHeight));
+
+      // Lerp group position and scale smoothly at 60fps
+      groupRef.current.position.x += (targetX - groupRef.current.position.x) * 0.12;
+      groupRef.current.position.y += (targetY - groupRef.current.position.y) * 0.12;
+
+      const currentScale = groupRef.current.scale.x;
+      const lerpedScale = currentScale + (targetScale - currentScale) * 0.12;
+      groupRef.current.scale.set(lerpedScale, lerpedScale, lerpedScale);
+
+      if (materialRef.current) {
+        materialRef.current.distort += (targetDistort - materialRef.current.distort) * 0.12;
+      }
+
+      // Continuous 3D rotation & ambient floating + scroll tilt
+      groupRef.current.rotation.y = Math.sin(t * 0.25) * 0.35 + t * 0.12 + scrollProgress * Math.PI * 1.5;
+      groupRef.current.rotation.x = Math.cos(t * 0.2) * 0.18 + Math.sin(scrollProgress * Math.PI) * 0.3;
+      groupRef.current.rotation.z = Math.sin(t * 0.18) * 0.15;
+
+      // Active 3D orbital revolution of satellite spheres around central blob
       nodesRef.current.forEach((node, i) => {
         if (!node) return;
+        const orbitAngle = t * (0.45 + (i % 3) * 0.18) + (i * Math.PI * 2) / 5 + scrollProgress * Math.PI;
+        const radius = targetSpread;
+
         node.position.set(
-          basePositions[i][0] * proxy.spread,
-          basePositions[i][1] * proxy.spread,
-          basePositions[i][2] * proxy.spread
+          Math.cos(orbitAngle) * (0.85 + (i % 2) * 0.25) * radius,
+          Math.sin(t * 1.2 + i * 1.5) * 0.25 * radius,
+          Math.sin(orbitAngle) * (0.85 + (i % 2) * 0.25) * radius
         );
       });
     }
   });
 
   return (
-    <Float speed={1.4} rotationIntensity={0.25} floatIntensity={0.45}>
+    <Float speed={2.0} rotationIntensity={0.5} floatIntensity={0.8}>
       <group ref={groupRef}>
         <Sphere args={[0.78, 96, 96]} position={[0, 0, 0]}>
           <MeshDistortMaterial
@@ -192,8 +172,13 @@ export default function BackgroundBlob() {
       >
         <ambientLight intensity={0.45} />
         <directionalLight position={[4, 4, 5]} intensity={1.4} />
-        <directionalLight position={[-4, -2, 3]} intensity={0.45} color="#8b5cf6" />
+        <directionalLight
+          position={[-4, -2, 3]}
+          intensity={0.45}
+          color="#8b5cf6"
+        />
         <pointLight position={[0, 1.8, 2]} intensity={1.2} color="#a855f7" />
+
         <Environment preset="city" />
         <Blob />
       </Canvas>

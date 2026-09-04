@@ -30,6 +30,12 @@ export default function EnHomePage() {
       <main className="studio-container">
         {/* HERO SECTION */}
         <section id="inicio" className="hero-section hero-layout-split">
+          <div className="hero-bg">
+            <div className="blob blob-1"></div>
+            <div className="blob blob-2"></div>
+            <div className="blob blob-3"></div>
+          </div>
+
           <div className="hero-left">
             <div className="hero-pill-badge">
               <span className="pill-dot"></span>
@@ -99,57 +105,70 @@ export default function EnHomePage() {
 
           <div className="wwd-grid">
             <Link href="/en/consultoria-ia" className="wwd-item">
-              <div className="wwd-item-header">
-                <div className="wwd-icon">🧠</div>
-                <h3>AI Consulting</h3>
+              <div className="wwd-icon-badge">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2L2 12l10 10 10-10L12 2z" />
+                </svg>
               </div>
+              <span className="wwd-kicker">Integrated AI</span>
+              <h3>AI Consulting</h3>
               <p>Process auditing and technical AI architecture design with measurable ROI.</p>
-              <div className="wwd-line"></div>
             </Link>
 
             <Link href="/en/automatizacion-de-procesos-con-ia" className="wwd-item">
-              <div className="wwd-item-header">
-                <div className="wwd-icon">⚡</div>
-                <h3>Process Automation</h3>
+              <div className="wwd-icon-badge">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="4" y="4" width="16" height="16" rx="3" transform="rotate(45 12 12)" />
+                </svg>
               </div>
+              <span className="wwd-kicker">Purposeful Design</span>
+              <h3>Process Automation</h3>
               <p>Replacing repetitive manual workflows with automated n8n & LLM pipelines.</p>
-              <div className="wwd-line"></div>
             </Link>
 
             <Link href="/en/agentes-de-ia" className="wwd-item">
-              <div className="wwd-item-header">
-                <div className="wwd-icon">🤖</div>
-                <h3>AI Agents</h3>
+              <div className="wwd-icon-badge">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                </svg>
               </div>
+              <span className="wwd-kicker">Real Velocity</span>
+              <h3>AI Agents</h3>
               <p>Autonomous agents connected to your databases and corporate tools.</p>
-              <div className="wwd-line"></div>
             </Link>
 
             <Link href="/en/software-a-medida" className="wwd-item">
-              <div className="wwd-item-header">
-                <div className="wwd-icon">💻</div>
-                <h3>Custom Software</h3>
+              <div className="wwd-icon-badge">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2l2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5z" />
+                </svg>
               </div>
+              <span className="wwd-kicker">Real Products</span>
+              <h3>Custom Software</h3>
               <p>Proprietary SaaS platforms without recurring per-user licensing fees.</p>
-              <div className="wwd-line"></div>
             </Link>
 
             <Link href="/en/integraciones-crm-erp" className="wwd-item">
-              <div className="wwd-item-header">
-                <div className="wwd-icon">🔗</div>
-                <h3>CRM & ERP Integrations</h3>
+              <div className="wwd-icon-badge">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="8" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
               </div>
+              <span className="wwd-kicker">Your Project</span>
+              <h3>CRM & ERP Integrations</h3>
               <p>Seamless connection of systems, APIs, payment gateways, and data sync.</p>
-              <div className="wwd-line"></div>
             </Link>
 
             <Link href="/en/dashboards-y-reportes" className="wwd-item">
-              <div className="wwd-item-header">
-                <div className="wwd-icon">📊</div>
-                <h3>Dashboards & Reporting</h3>
+              <div className="wwd-icon-badge">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 20V10M12 20V4M6 20v-6" />
+                </svg>
               </div>
+              <span className="wwd-kicker">Business Intelligence</span>
+              <h3>Dashboards & Reporting</h3>
               <p>Real-time Business Intelligence with algorithmic anomaly detection.</p>
-              <div className="wwd-line"></div>
             </Link>
           </div>
         </section>
