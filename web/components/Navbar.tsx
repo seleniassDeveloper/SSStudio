@@ -18,7 +18,7 @@ export function Navbar({ lang = "es" }: NavbarProps) {
           <Link href={isEn ? "/en" : "/"} className="logo-new" onClick={() => setIsOpen(false)}>
             <span className="logo-main-text">SSSTUDIO</span>
             <span className="logo-sub-text desktop-only-sub">
-              {isEn ? "AI CONSULTING AGENCY" : "AGENCIA DE CONSULTORÍA IA"}
+              {isEn ? "SOFTWARE & PROCESS CONSULTING" : "CONSULTORÍA DE SOFTWARE Y PROCESOS"}
             </span>
           </Link>
         </div>
@@ -32,7 +32,7 @@ export function Navbar({ lang = "es" }: NavbarProps) {
             </li>
             <li>
               <Link href={isEn ? "/en/agentes-de-ia" : "/agentes-de-ia"}>
-                {isEn ? "AI Agents" : "Agentes IA"}
+                {isEn ? "Automation" : "Automatizaciones"}
               </Link>
             </li>
             <li>
@@ -71,8 +71,8 @@ export function Navbar({ lang = "es" }: NavbarProps) {
           </div>
 
           <Link href={isEn ? "/en/contacto" : "/contacto"} className="btn btn-dark nav-book-btn">
-            <span className="btn-text-desktop">{isEn ? "Book AI Audit →" : "Agendar Auditoría IA →"}</span>
-            <span className="btn-text-mobile">{isEn ? "Audit IA →" : "Auditoría IA →"}</span>
+            <span className="btn-text-desktop">{isEn ? "Book Tech Audit →" : "Agendar Auditoría →"}</span>
+            <span className="btn-text-mobile">{isEn ? "Audit →" : "Auditoría →"}</span>
           </Link>
 
           <button
@@ -99,7 +99,7 @@ export function Navbar({ lang = "es" }: NavbarProps) {
             </li>
             <li>
               <Link href={isEn ? "/en/agentes-de-ia" : "/agentes-de-ia"} onClick={() => setIsOpen(false)}>
-                {isEn ? "AI Agents" : "Agentes IA"}
+                {isEn ? "Automation" : "Automatizaciones"}
               </Link>
             </li>
             <li>
@@ -135,7 +135,7 @@ export function Navbar({ lang = "es" }: NavbarProps) {
               className="btn btn-dark mobile-book-btn"
               onClick={() => setIsOpen(false)}
             >
-              {isEn ? "Book AI Audit →" : "Agendar Auditoría IA →"}
+              {isEn ? "Book Tech Audit →" : "Agendar Auditoría →"}
             </Link>
           </div>
         </div>

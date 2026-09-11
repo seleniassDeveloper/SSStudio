@@ -8,9 +8,9 @@ import { SmoothScroll } from "@/components/SmoothScroll";
 import { HeroGraphic } from "@/components/HeroGraphic";
 
 export const metadata: Metadata = {
-  title: "AI Consulting & Custom Software for Companies",
+  title: "Software Engineering & Process Automation Consulting",
   description:
-    "We analyze your business operations and build tailored AI solutions: process automation, AI agents, API integrations, and custom software. 5 years building platforms used in 17 countries.",
+    "We analyze your business operations and build tailored technical solutions: process automation, workflow engines, API integrations, and custom software. 5 years building platforms used in 17 countries.",
   alternates: {
     canonical: "/en",
     languages: {
@@ -39,20 +39,20 @@ export default function EnHomePage() {
           <div className="hero-left">
             <div className="hero-pill-badge">
               <span className="pill-dot"></span>
-              <span className="pill-text">AI Solution Architect & Software Engineering</span>
+              <span className="pill-text">Software Engineering & Process Consulting</span>
             </div>
 
             <h1 className="hero-h1-new">
-              Custom software and AI <span className="text-gradient-purple">for processes that can&apos;t keep up</span>
+              Custom software engineering <span className="text-gradient-purple">for processes that can&apos;t keep up</span>
             </h1>
 
             <p className="hero-p-new">
-              I replaced Jira for 820 users across 17 countries and saved ~$300k in licensing. Now I build those systems for your company.
+              We replaced Jira for 820 users across 17 countries and saved ~$300k in licensing. Now we build those systems for your company.
             </p>
 
             <div className="hero-ctas-row" style={{ display: "flex", gap: "1rem", flexWrap: "wrap", margin: "2rem 0" }}>
               <Link href="/en/contacto" className="btn btn-primary" style={{ padding: "0.85rem 1.8rem", fontSize: "1.05rem" }}>
-                Analyze my process →
+                Analyze your process →
               </Link>
               <Link href="/en/casos" className="btn btn-light" style={{ padding: "0.85rem 1.5rem", fontSize: "1rem" }}>
                 View case studies
@@ -84,7 +84,7 @@ export default function EnHomePage() {
         <section className="hero-image-banner" style={{ margin: "3rem auto" }}>
           <Image
             src="/paginassstudio.png"
-            alt="SSSTUDIO AI Consulting & Software Engineering Platform Dashboard"
+            alt="SSSTUDIO Software Engineering & Process Consulting Platform Dashboard"
             width={1400}
             height={900}
             priority
@@ -110,9 +110,9 @@ export default function EnHomePage() {
                   <path d="M12 2L2 12l10 10 10-10L12 2z" />
                 </svg>
               </div>
-              <span className="wwd-kicker">Integrated AI</span>
-              <h3>AI Consulting</h3>
-              <p>Process auditing and technical AI architecture design with measurable ROI.</p>
+              <span className="wwd-kicker">Technical Strategy</span>
+              <h3>Software Consulting</h3>
+              <p>Process auditing and technical system architecture design with measurable ROI.</p>
             </Link>
 
             <Link href="/en/automatizacion-de-procesos-con-ia" className="wwd-item">
@@ -123,7 +123,7 @@ export default function EnHomePage() {
               </div>
               <span className="wwd-kicker">Purposeful Design</span>
               <h3>Process Automation</h3>
-              <p>Replacing repetitive manual workflows with automated n8n & LLM pipelines.</p>
+              <p>Replacing repetitive manual workflows with automated pipelines and robust integrations.</p>
             </Link>
 
             <Link href="/en/agentes-de-ia" className="wwd-item">
@@ -133,8 +133,8 @@ export default function EnHomePage() {
                 </svg>
               </div>
               <span className="wwd-kicker">Real Velocity</span>
-              <h3>AI Agents</h3>
-              <p>Autonomous agents connected to your databases and corporate tools.</p>
+              <h3>Autonomous Systems</h3>
+              <p>Task engines connected to your databases and corporate software.</p>
             </Link>
 
             <Link href="/en/software-a-medida" className="wwd-item">
@@ -186,7 +186,7 @@ export default function EnHomePage() {
           <div className="vision-stats">
             <div className="v-stat">
               <strong>5 Years</strong>
-              <span>Building SaaS platforms & AI engines</span>
+              <span>Building SaaS platforms & workflow engines</span>
             </div>
             <div className="v-stat">
               <strong>17 Countries</strong>
@@ -202,12 +202,12 @@ export default function EnHomePage() {
         {/* CONTACT SECTION */}
         <section id="contacto" className="section" style={{ margin: "5rem 0", textAlign: "center" }}>
           <div className="match-card-cta" style={{ maxWidth: "700px", margin: "0 auto" }}>
-            <h2>Ready to optimize your company's processes?</h2>
+            <h2>Ready to optimize your company&apos;s processes?</h2>
             <p style={{ margin: "1rem 0 2rem 0", fontSize: "1.1rem" }}>
-              Book a 30-minute discovery call with Selenia Sánchez to analyze your operations and calculate ROI.
+              Book a 30-minute discovery call with our consulting team to analyze your operations and calculate ROI.
             </p>
             <Link href="/en/contacto" className="btn btn-primary" style={{ padding: "0.9rem 2.2rem", fontSize: "1.1rem" }}>
-              Analyze my process →
+              Analyze your process →
             </Link>
           </div>
         </section>

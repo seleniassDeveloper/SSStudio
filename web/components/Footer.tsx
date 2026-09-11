@@ -10,13 +10,13 @@ export function Footer({ lang = "es" }: FooterProps) {
 
   return (
     <footer className="footer">
-      <p>© {new Date().getFullYear()} {SITE.name} AI Consulting. {isEn ? "All rights reserved." : "Todos los derechos reservados."}</p>
+      <p>© {new Date().getFullYear()} {SITE.name} Software & Process Consulting. {isEn ? "All rights reserved." : "Todos los derechos reservados."}</p>
       <div className="footer-links">
         <Link href={isEn ? "/en/consultoria-ia" : "/consultoria-ia"}>
           {isEn ? "Consulting" : "Consultoría"}
         </Link>
         <Link href={isEn ? "/en/agentes-de-ia" : "/agentes-de-ia"}>
-          {isEn ? "AI Agents" : "Agentes IA"}
+          {isEn ? "Automation" : "Automatizaciones"}
         </Link>
         <Link href={isEn ? "/en/casos" : "/casos"}>
           {isEn ? "Cases" : "Casos"}

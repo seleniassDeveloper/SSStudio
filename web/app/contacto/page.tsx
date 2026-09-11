@@ -6,7 +6,7 @@ import { SITE } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Contacto",
   description:
-    "Agendá una sesión de descubrimiento de 30 minutos con un arquitecto de IA para analizar tus procesos y evaluar viabilidad y ROI.",
+    "Agendá una sesión de descubrimiento de 30 minutos con nuestros consultores de software para analizar tus procesos y evaluar viabilidad y ROI.",
   alternates: {
     canonical: "/contacto",
     languages: {
@@ -40,9 +40,9 @@ export default function ContactoPage() {
       <main className="studio-container" style={{ paddingTop: "5.5rem", paddingBottom: "3rem", maxWidth: "1100px", margin: "0 auto" }}>
         <header className="section-header">
           <span className="section-tag">Contacto Directo B2B</span>
-          <h1>Contame qué proceso querés mejorar</h1>
+          <h1>Contanos qué proceso querés mejorar</h1>
           <p className="section-description">
-            Reserva una llamada de 30 minutos sin compromiso directamente con Selenia Sánchez (Founder & AI Solution Architect).
+            Reserva una llamada de 30 minutos sin compromiso con nuestro equipo de consultores (Software Engineering & Process Automation).
           </p>
         </header>
 

@@ -47,7 +47,7 @@ export default function EnCasosPage() {
       <main className="studio-container" style={{ paddingTop: "5.5rem", paddingBottom: "3rem", maxWidth: "1000px", margin: "0 auto" }}>
         <header className="section-header">
           <span className="section-tag">Credentials & Projects</span>
-          <h1>Systems I Have Built</h1>
+          <h1>Systems We Have Built</h1>
           <p className="section-description">
             5 years of proven experience building SaaS platforms, workflow engines, reservation systems, and enterprise AI tools.
           </p>
@@ -74,7 +74,7 @@ export default function EnCasosPage() {
 
         <section style={{ margin: "5rem 0", textAlign: "center" }}>
           <h2>Want to build a system with this technical standard?</h2>
-          <p style={{ margin: "1rem 0 1.5rem 0" }}>Talk directly with Selenia Sánchez about your company's challenge.</p>
+          <p style={{ margin: "1rem 0 1.5rem 0" }}>Talk directly with our consulting team about your company&apos;s challenge.</p>
           <Link href="/en/contacto" className="btn btn-dark nav-book-btn" style={{ height: "46px", padding: "0 2rem" }}>
             Schedule Call →
           </Link>

@@ -8,9 +8,9 @@ import { SmoothScroll } from "@/components/SmoothScroll";
 import { HeroGraphic } from "@/components/HeroGraphic";
 
 export const metadata: Metadata = {
-  title: "Consultoría en IA y software a medida para empresas | SSSTudio",
+  title: "Consultoría de Software y Automatización de Procesos | SSSTudio",
   description:
-    "Analizamos tus procesos y construimos la tecnología que los resuelve: automatización, agentes de IA, integraciones y software a medida. 5 años construyendo plataformas usadas en 17 países.",
+    "Analizamos los procesos de tu empresa y construimos la tecnología que los resuelve: automatización, integraciones, arquitectura de sistemas y software a medida. 5 años construyendo plataformas usadas en 17 países.",
   alternates: {
     canonical: "/",
     languages: {
@@ -39,20 +39,20 @@ export default function Home() {
           <div className="hero-left">
             <div className="hero-pill-badge">
               <span className="pill-dot"></span>
-              <span className="pill-text">AI Solution Architect & Software Engineering</span>
+              <span className="pill-text">Software Engineering & Process Consulting</span>
             </div>
 
             <h1 className="hero-h1-new">
-              Software e IA a medida <span className="text-gradient-purple">para procesos que ya no dan más</span>
+              Software e ingeniería a medida <span className="text-gradient-purple">para procesos que ya no dan más</span>
             </h1>
 
             <p className="hero-p-new">
-              Reemplacé Jira para 820 personas en 17 países y ahorré ~$300k en licencias. Ahora construyo esos sistemas para tu empresa.
+              Reemplazamos Jira para 820 personas en 17 países y ahorramos ~$300k en licencias. Ahora construimos esos sistemas para tu empresa.
             </p>
 
             <div className="hero-ctas-row" style={{ display: "flex", gap: "1rem", flexWrap: "wrap", margin: "2rem 0" }}>
               <Link href="/contacto" className="btn btn-primary" style={{ padding: "0.85rem 1.8rem", fontSize: "1.05rem" }}>
-                Analizar mi proceso →
+                Analizar tu proceso →
               </Link>
               <Link href="/casos" className="btn btn-light" style={{ padding: "0.85rem 1.5rem", fontSize: "1rem" }}>
                 Ver casos reales
@@ -84,7 +84,7 @@ export default function Home() {
         <section className="hero-image-banner" style={{ margin: "3rem auto" }}>
           <Image
             src="/paginassstudio.png"
-            alt="Plataforma y Dashboard SSSTUDIO AI Consulting & Software Engineering"
+            alt="Plataforma y Dashboard SSSTUDIO Software & Process Consulting"
             width={1400}
             height={900}
             priority
@@ -110,9 +110,9 @@ export default function Home() {
                   <path d="M12 2L2 12l10 10 10-10L12 2z" />
                 </svg>
               </div>
-              <span className="wwd-kicker">IA integrada</span>
-              <h3>Consultoría IA</h3>
-              <p>Auditoría de procesos y diseño de arquitectura técnica de IA con ROI medible.</p>
+              <span className="wwd-kicker">Estrategia técnica</span>
+              <h3>Consultoría de Software</h3>
+              <p>Auditoría de procesos y diseño de arquitectura técnica de sistemas con ROI medible.</p>
             </Link>
 
             <Link href="/automatizacion-de-procesos-con-ia" className="wwd-item">
@@ -123,7 +123,7 @@ export default function Home() {
               </div>
               <span className="wwd-kicker">Diseño con propósito</span>
               <h3>Automatización de Procesos</h3>
-              <p>Sustitución de flujos manuales repetitivos por pipelines automatizados con n8n y LLMs.</p>
+              <p>Sustitución de flujos manuales repetitivos por pipelines automatizados e integraciones robustas.</p>
             </Link>
 
             <Link href="/agentes-de-ia" className="wwd-item">
@@ -133,8 +133,8 @@ export default function Home() {
                 </svg>
               </div>
               <span className="wwd-kicker">Velocidad real</span>
-              <h3>Agentes de IA</h3>
-              <p>Agentes autónomos conectados a tus bases de datos y herramientas corporativas.</p>
+              <h3>Sistemas Autónomos</h3>
+              <p>Motores de tareas autónomos conectados a tus bases de datos y herramientas corporativas.</p>
             </Link>
 
             <Link href="/software-a-medida" className="wwd-item">
@@ -186,7 +186,7 @@ export default function Home() {
           <div className="vision-stats">
             <div className="v-stat">
               <strong>5 Años</strong>
-              <span>Construyendo software SaaS y motores de IA</span>
+              <span>Construyendo software SaaS y motores de flujos</span>
             </div>
             <div className="v-stat">
               <strong>17 Países</strong>
@@ -227,10 +227,10 @@ export default function Home() {
           <div className="match-card-cta" style={{ maxWidth: "700px", margin: "0 auto" }}>
             <h2>¿Listo para optimizar los procesos de tu empresa?</h2>
             <p style={{ margin: "1rem 0 2rem 0", fontSize: "1.1rem" }}>
-              Agendá una llamada de descubrimiento de 30 minutos con Selenia Sánchez para analizar tu operación y calcular el retorno de inversión.
+              Agendá una llamada de descubrimiento de 30 minutos con nuestro equipo de consultores para analizar tu operación y calcular el retorno de inversión.
             </p>
             <Link href="/contacto" className="btn btn-primary" style={{ padding: "0.9rem 2.2rem", fontSize: "1.1rem" }}>
-              Analizar mi proceso →
+              Analizar tu proceso →
             </Link>
           </div>
         </section>

@@ -15,10 +15,10 @@ export function HeroGraphic() {
           </div>
         </div>
         <div className="flow-node">
-          <div className="node-icon bg-light-purple">🤖</div>
+          <div className="node-icon bg-light-purple">⚙️</div>
           <div className="node-text">
-            <strong>Agentes LLM / RAG</strong>
-            <span>Razonamiento seguro</span>
+            <strong>Procesamiento Inteligente</strong>
+            <span>Reglas y validación segura</span>
           </div>
         </div>
         <div className="flow-node">
@@ -60,7 +60,7 @@ export function HeroGraphic() {
         
         <div className="dash-main">
           <div className="dash-header">
-            <h3>Panel de Automatización & IA</h3>
+            <h3>Panel de Operaciones & Automatización</h3>
           </div>
           
           <div className="dash-stats-grid">
@@ -124,7 +124,7 @@ export function HeroGraphic() {
                   <span className="auto-status">Activo</span>
                 </li>
                 <li>
-                  <span className="auto-name">Agentes LLM</span>
+                  <span className="auto-name">Motor de Flujos</span>
                   <span className="auto-status">Activo</span>
                 </li>
                 <li>

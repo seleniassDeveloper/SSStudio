@@ -6,7 +6,7 @@ import { SITE } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Book a 30-minute discovery session with an AI architect to analyze your workflows and evaluate feasibility and ROI.",
+    "Book a 30-minute discovery session with our software consultants to analyze your workflows and evaluate feasibility and ROI.",
   alternates: {
     canonical: "/en/contacto",
     languages: {
@@ -23,9 +23,9 @@ export default function EnContactoPage() {
       <main className="studio-container" style={{ paddingTop: "5.5rem", paddingBottom: "3rem", maxWidth: "1100px", margin: "0 auto" }}>
         <header className="section-header">
           <span className="section-tag">Direct B2B Contact</span>
-          <h1>Tell me which process you want to optimize</h1>
+          <h1>Tell us which process you want to optimize</h1>
           <p className="section-description">
-            Book a 30-minute discovery call directly with Selenia Sánchez (Founder & AI Solution Architect).
+            Book a 30-minute discovery call with our team of Software Engineering & Process Automation consultants.
           </p>
         </header>
 

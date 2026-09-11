@@ -62,7 +62,7 @@ export default function CasosPage() {
       <main className="studio-container" style={{ paddingTop: "5.5rem", paddingBottom: "3rem", maxWidth: "1000px", margin: "0 auto" }}>
         <header className="section-header">
           <span className="section-tag">Credenciales y Proyectos</span>
-          <h1>Sistemas que ya construí</h1>
+          <h1>Sistemas que ya construimos</h1>
           <p className="section-description">
             5 años de experiencia comprobable construyendo plataformas SaaS, motores de flujos de trabajo, sistemas de reservas y herramientas empresariales con Inteligencia Artificial.
           </p>
@@ -89,7 +89,7 @@ export default function CasosPage() {
 
         <section style={{ margin: "5rem 0", textAlign: "center" }}>
           <h2>¿Querés construir un sistema con esta misma solvencia técnica?</h2>
-          <p style={{ margin: "1rem 0 1.5rem 0" }}>Conversá directamente con Selenia Sánchez sobre el desafío de tu empresa.</p>
+          <p style={{ margin: "1rem 0 1.5rem 0" }}>Conversá directamente con nuestro equipo de consultores sobre el desafío de tu empresa.</p>
           <Link href="/contacto" className="btn btn-dark nav-book-btn" style={{ height: "46px", padding: "0 2rem" }}>
             Agendar Llamada →
           </Link>

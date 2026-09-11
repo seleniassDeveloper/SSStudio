@@ -168,9 +168,9 @@ export function ServicePageTemplate(props: ServicePageProps) {
         <section className="service-cta-block" style={{ margin: "5rem 0", textAlign: "center" }}>
           <div className="match-card-cta" style={{ maxWidth: "600px", margin: "0 auto" }}>
             <h2>¿Querés evaluar este servicio para tu empresa?</h2>
-            <p style={{ margin: "1rem 0 1.5rem 0" }}>Agendá una llamada de descubrimiento de 30 minutos directamente con Selenia Sánchez.</p>
+            <p style={{ margin: "1rem 0 1.5rem 0" }}>Agendá una llamada de descubrimiento de 30 minutos con nuestro equipo de consultores.</p>
             <Link href="/contacto" className="btn btn-dark nav-book-btn" style={{ height: "46px", padding: "0 2rem", fontSize: "1rem" }}>
-              Analizar mi proceso →
+              Analizar tu proceso →
             </Link>
           </div>
         </section>

@@ -14,11 +14,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: "Consultoría en IA y software a medida para empresas | SSSTudio",
+    default: "Consultoría de Software y Automatización de Procesos | SSSTudio",
     template: `%s | ${SITE.name}`,
   },
   description:
-    "Analizamos tus procesos y construimos la tecnología que los resuelve: automatización, agentes de IA, integraciones y software a medida. 5 años construyendo plataformas usadas en 17 países.",
+    "Analizamos tus procesos y construimos la tecnología que los resuelve: automatización, integraciones, arquitectura de sistemas y software a medida. 5 años construyendo plataformas usadas en 17 países.",
   alternates: {
     canonical: "/",
     languages: { "es-ES": "/", "en-US": "/en" },
@@ -27,9 +27,9 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_ES",
     siteName: SITE.name,
-    title: "Consultoría en IA y software a medida para empresas | SSSTudio",
+    title: "Consultoría de Software y Automatización de Procesos | SSSTudio",
     description:
-      "Analizamos tus procesos y construimos la tecnología que los resuelve: automatización, agentes de IA, integraciones y software a medida.",
+      "Analizamos tus procesos y construimos la tecnología que los resuelve: automatización, integraciones y software a medida.",
   },
   robots: {
     index: true,
