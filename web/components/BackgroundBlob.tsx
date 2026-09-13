@@ -29,23 +29,23 @@ export default function BackgroundBlob() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // 2. Sophisticated Corporate Lighting (Emerald & Slate)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+    // 2. Sophisticated Corporate Lighting (Luminous Peony Rose & Pearl)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
     scene.add(ambientLight);
 
-    const dirLight1 = new THREE.DirectionalLight(0xffffff, 2.0);
+    const dirLight1 = new THREE.DirectionalLight(0xffffff, 2.2);
     dirLight1.position.set(4, 4, 5);
     scene.add(dirLight1);
 
-    const dirLight2 = new THREE.DirectionalLight(0x059669, 2.2); // Corporate Emerald Rim Light
+    const dirLight2 = new THREE.DirectionalLight(0xd8b4b7, 2.0); // Soft Rose Pearl Rim Light
     dirLight2.position.set(-4, -2, 3);
     scene.add(dirLight2);
 
-    const pointLight1 = new THREE.PointLight(0x10b981, 2.8, 15); // Mint Emerald Light
+    const pointLight1 = new THREE.PointLight(0xfff8f5, 2.5, 15); // Luminous Pearl Light
     pointLight1.position.set(0, 1.8, 2);
     scene.add(pointLight1);
 
-    const pointLight2 = new THREE.PointLight(0x334155, 2.0, 15); // Slate Light
+    const pointLight2 = new THREE.PointLight(0x8c3a3e, 1.2, 15); // Soft Peony Accent
     pointLight2.position.set(3, -2, 2);
     scene.add(pointLight2);
 
@@ -53,21 +53,23 @@ export default function BackgroundBlob() {
     const mainGroup = new THREE.Group();
     scene.add(mainGroup);
 
-    // Central Sphere (Corporate Elegant Deep Emerald)
+    // Central Sphere (Ultra Soft Silk Peony)
     const mainGeo = new THREE.IcosahedronGeometry(0.78, 12);
     const mainMat = new THREE.MeshPhysicalMaterial({
-      color: 0x059669,
-      emissive: 0x064e3b,
-      emissiveIntensity: 0.35,
-      roughness: 0.22,
-      metalness: 0.12,
-      clearcoat: 0.9,
-      clearcoatRoughness: 0.08,
+      color: 0xf2d8da,
+      emissive: 0xd8b4b7,
+      emissiveIntensity: 0.12,
+      roughness: 0.15,
+      metalness: 0.05,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.02,
+      transparent: true,
+      opacity: 0.82,
     });
     const mainSphere = new THREE.Mesh(mainGeo, mainMat);
     mainGroup.add(mainSphere);
 
-    // Satellite Spheres (Alternating Emerald & Slate)
+    // Satellite Spheres (Alternating Luminous Pearl & Soft Pink Silk)
     const basePositions = [
       { x: 0.85, y: 0.22, z: -0.15, size: 0.36 },
       { x: -0.72, y: -0.35, z: 0.18, size: 0.48 },
@@ -80,15 +82,17 @@ export default function BackgroundBlob() {
 
     basePositions.forEach((pos, idx) => {
       const geo = new THREE.IcosahedronGeometry(pos.size, 8);
-      const isEmerald = idx % 2 === 0;
+      const isPearl = idx % 2 === 0;
       const mat = new THREE.MeshPhysicalMaterial({
-        color: isEmerald ? 0x10b981 : 0x334155,
-        emissive: isEmerald ? 0x064e3b : 0x0f172a,
-        emissiveIntensity: 0.3,
-        roughness: 0.2,
-        metalness: 0.12,
-        clearcoat: 0.9,
-        clearcoatRoughness: 0.08,
+        color: isPearl ? 0xf7e8ea : 0xe8c5c8,
+        emissive: isPearl ? 0xd8b4b7 : 0xb05357,
+        emissiveIntensity: 0.10,
+        roughness: 0.15,
+        metalness: 0.05,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.02,
+        transparent: true,
+        opacity: 0.80,
       });
       const mesh = new THREE.Mesh(geo, mat);
       mesh.position.set(pos.x, pos.y, pos.z);

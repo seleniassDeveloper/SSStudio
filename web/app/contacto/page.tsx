@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { BackgroundBlobWrapper } from "@/components/BackgroundBlobWrapper";
+import { SmoothScroll } from "@/components/SmoothScroll";
+import { ContactForm } from "@/components/ContactForm";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Contacto",
+  title: "Contacto & Agendar Auditoría",
   description:
-    "Agendá una sesión de descubrimiento de 30 minutos con nuestros consultores de software para analizar tus procesos y evaluar viabilidad y ROI.",
+    "Agendá una sesión de descubrimiento de 30 minutos sin compromiso con nuestros consultores de software para analizar tus procesos y evaluar viabilidad y ROI.",
   alternates: {
     canonical: "/contacto",
     languages: {
@@ -32,60 +35,67 @@ export default function ContactoPage() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(contactSchema) }}
-      />
-      <Navbar />
-      <main className="studio-container" style={{ paddingTop: "5.5rem", paddingBottom: "3rem", maxWidth: "1100px", margin: "0 auto" }}>
-        <header className="section-header">
+      <SmoothScroll />
+      <BackgroundBlobWrapper />
+      <Navbar lang="es" />
+
+      <main className="studio-container" style={{ paddingTop: "4rem", paddingBottom: "5rem", maxWidth: "1150px", margin: "0 auto" }}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(contactSchema) }}
+        />
+
+        <header className="section-header" style={{ marginBottom: "3rem" }}>
           <span className="section-tag">Contacto Directo B2B</span>
-          <h1>Contanos qué proceso querés mejorar</h1>
-          <p className="section-description">
+          <h1 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, color: "var(--text)", marginBottom: "1rem", lineHeight: 1.15 }}>
+            Contanos qué proceso querés mejorar
+          </h1>
+          <p className="section-description" style={{ fontSize: "1.1rem", color: "var(--muted)", maxWidth: "700px" }}>
             Reserva una llamada de 30 minutos sin compromiso con nuestro equipo de consultores (Software Engineering & Process Automation).
           </p>
         </header>
 
-        <section style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "3rem", margin: "3rem 0" }}>
-          <div>
-            <h2 style={{ fontSize: "1.3rem", marginBottom: "1rem" }}>¿Qué podés esperar de la llamada?</h2>
-            <ul className="match-list match-list-yes" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              <li>Análisis directo de tus cuellos de botella operativos sin discursos de venta.</li>
-              <li>Estimación clara de viabilidad técnica y tiempo de desarrollo.</li>
-              <li>Calculadora inicial de retorno de inversión (ROI) estimado.</li>
-              <li>Recomendación de arquitectura (modelos propios vs integraciones SaaS).</li>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "2.5rem", alignItems: "start" }}>
+          {/* Left Column: What to expect */}
+          <div style={{ background: "#FFFFFF", border: "1.5px solid var(--border)", borderRadius: "24px", padding: "2.5rem", boxShadow: "0 14px 38px -6px rgba(59, 24, 21, 0.08)" }}>
+            <h2 style={{ fontSize: "1.35rem", fontWeight: 700, color: "var(--text)", marginBottom: "1.5rem" }}>
+              ¿Qué podés esperar de la llamada?
+            </h2>
+
+            <ul className="match-list match-list-yes">
+              <li>
+                <strong>Análisis directo:</strong> Identificación de cuellos de botella operativos sin discursos de venta.
+              </li>
+              <li>
+                <strong>Estimación clara:</strong> Viabilidad técnica y cronograma de desarrollo aproximado.
+              </li>
+              <li>
+                <strong>Calculadora de ROI:</strong> Estimación inicial del retorno de inversión para tu proyecto.
+              </li>
+              <li>
+                <strong>Arquitectura recomendada:</strong> Modelos y desarrollos propios vs. integraciones SaaS.
+              </li>
             </ul>
 
-            <div style={{ marginTop: "2.5rem", padding: "1.5rem", borderRadius: "14px", background: "var(--surface-tint)", border: "1px solid var(--border)" }}>
-              <strong>Contacto directo:</strong>
-              <div style={{ margin: "0.5rem 0", color: "var(--accent)" }}>{SITE.email}</div>
-              <div style={{ fontSize: "0.9rem", color: "var(--muted)" }}>Respuesta en menos de 24 horas hábiles.</div>
+            <div style={{ marginTop: "2.5rem", padding: "1.5rem", borderRadius: "16px", background: "var(--surface-tint)", border: "1px solid var(--border)" }}>
+              <div style={{ fontSize: "0.85rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--muted)", marginBottom: "0.3rem" }}>
+                Email Destino
+              </div>
+              <div style={{ fontSize: "1.1rem", fontWeight: 700, color: "var(--accent)", marginBottom: "0.3rem" }}>
+                {SITE.email}
+              </div>
+              <div style={{ fontSize: "0.85rem", color: "var(--muted)" }}>
+                Las consultas enviadas por el formulario se entregan directamente aquí en menos de 24 horas hábiles.
+              </div>
             </div>
           </div>
 
-          <div style={{ padding: "2rem", borderRadius: "20px", background: "var(--surface)", border: "1px solid var(--border)" }}>
-            <h2 style={{ fontSize: "1.2rem", marginBottom: "1.5rem" }}>Enviar mensaje directo</h2>
-            <form action={`mailto:${SITE.email}`} method="post" encType="text/plain" className="contact-form">
-              <div className="form-group" style={{ marginBottom: "1rem" }}>
-                <label htmlFor="name" style={{ display: "block", marginBottom: "0.4rem", fontWeight: 600 }}>Nombre y Empresa *</label>
-                <input type="text" id="name" name="name" required placeholder="Ej. Sofía - Empresa Tech" style={{ width: "100%", padding: "0.75rem", borderRadius: "8px", border: "1px solid var(--border)", background: "var(--input-bg)", color: "var(--text)" }} />
-              </div>
-              <div className="form-group" style={{ marginBottom: "1rem" }}>
-                <label htmlFor="role" style={{ display: "block", marginBottom: "0.4rem", fontWeight: 600 }}>Cargo</label>
-                <input type="text" id="role" name="role" placeholder="Ej. CTO / Director de Operaciones" style={{ width: "100%", padding: "0.75rem", borderRadius: "8px", border: "1px solid var(--border)", background: "var(--input-bg)", color: "var(--text)" }} />
-              </div>
-              <div className="form-group" style={{ marginBottom: "1rem" }}>
-                <label htmlFor="desc" style={{ display: "block", marginBottom: "0.4rem", fontWeight: 600 }}>Desafío operativo *</label>
-                <textarea id="desc" name="desc" required rows={4} placeholder="¿Qué proceso querés automatizar o qué software necesitás construir?" style={{ width: "100%", padding: "0.75rem", borderRadius: "8px", border: "1px solid var(--border)", background: "var(--input-bg)", color: "var(--text)" }}></textarea>
-              </div>
-              <button type="submit" className="btn btn-dark nav-book-btn" style={{ width: "100%", height: "46px", fontSize: "1rem" }}>
-                Enviar Consulta →
-              </button>
-            </form>
-          </div>
-        </section>
+          {/* Right Column: Contact Form Component */}
+          <ContactForm lang="es" />
+        </div>
       </main>
-      <Footer />
+
+      <Footer lang="es" />
     </>
   );
 }

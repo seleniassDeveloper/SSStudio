@@ -38,10 +38,10 @@ export function HeroGraphic() {
 
         {/* The dashed connection lines SVG overlay */}
         <svg className="flow-lines-svg" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M 120 40 L 260 40 L 260 200 L 300 200" stroke="#A29BFE" strokeWidth="2" strokeDasharray="4 4" />
-          <path d="M 120 120 L 260 120" stroke="#A29BFE" strokeWidth="2" strokeDasharray="4 4" />
-          <path d="M 120 200 L 300 200" stroke="#A29BFE" strokeWidth="2" strokeDasharray="4 4" />
-          <path d="M 120 280 L 260 280 L 260 200" stroke="#A29BFE" strokeWidth="2" strokeDasharray="4 4" />
+          <path d="M 120 40 L 260 40 L 260 200 L 300 200" stroke="#B05357" strokeWidth="2" strokeDasharray="4 4" />
+          <path d="M 120 120 L 260 120" stroke="#B05357" strokeWidth="2" strokeDasharray="4 4" />
+          <path d="M 120 200 L 300 200" stroke="#B05357" strokeWidth="2" strokeDasharray="4 4" />
+          <path d="M 120 280 L 260 280 L 260 200" stroke="#B05357" strokeWidth="2" strokeDasharray="4 4" />
         </svg>
       </div>
 
@@ -94,11 +94,11 @@ export function HeroGraphic() {
               <div className="chart-body" style={{ position: "relative" }}>
                 <svg viewBox="0 0 400 150" className="mock-chart-svg">
                   <path d="M 0 130 C 50 130, 80 110, 100 100 C 130 80, 160 90, 200 60 C 230 40, 270 50, 300 30 C 330 10, 370 20, 400 0" 
-                        fill="none" stroke="#6C5CE7" strokeWidth="3" />
-                  <circle cx="100" cy="100" r="4" fill="#6C5CE7" />
-                  <circle cx="200" cy="60" r="4" fill="#6C5CE7" />
-                  <circle cx="300" cy="30" r="4" fill="#6C5CE7" />
-                  <circle cx="400" cy="0" r="4" fill="#6C5CE7" />
+                        fill="none" stroke="#B05357" strokeWidth="3" />
+                  <circle cx="100" cy="100" r="4" fill="#B05357" />
+                  <circle cx="200" cy="60" r="4" fill="#B05357" />
+                  <circle cx="300" cy="30" r="4" fill="#B05357" />
+                  <circle cx="400" cy="0" r="4" fill="#B05357" />
                 </svg>
                 <div className="chart-tooltip" style={{ position: "absolute", left: "280px", top: "10px" }}>
                   <span>2026</span>
