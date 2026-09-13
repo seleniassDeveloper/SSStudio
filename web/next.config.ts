@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "standalone",
+  ...(process.env.RENDER === "true" ? { output: "standalone" as const } : {}),
   eslint: {
     ignoreDuringBuilds: true,
   },
