@@ -53,7 +53,7 @@ export function ContactForm({ lang = "es" }: ContactFormProps) {
   };
 
   return (
-    <div style={{ background: "#FFFFFF", border: "1.5px solid var(--border)", borderRadius: "24px", padding: "2.5rem", boxShadow: "0 14px 38px -6px rgba(59, 24, 21, 0.08)" }}>
+    <div style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #FAF5F1 100%)", border: "1.5px solid rgba(59, 24, 21, 0.14)", borderRadius: "24px", padding: "2.75rem", boxShadow: "0 20px 48px -10px rgba(59, 24, 21, 0.09), 0 4px 14px rgba(176, 83, 87, 0.04)" }}>
       <h2 style={{ fontSize: "1.35rem", fontWeight: 700, color: "var(--text)", marginBottom: "0.5rem" }}>
         {isEn ? "Send a Direct Message" : "Enviar mensaje directo"}
       </h2>
