@@ -43,3 +43,4 @@ frontend/dist/
 .vercel
 web/.next/
 *.timestamp-*.mjs
+.env*
