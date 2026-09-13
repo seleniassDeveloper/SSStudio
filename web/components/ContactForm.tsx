@@ -158,8 +158,19 @@ export function ContactForm({ lang = "es" }: ContactFormProps) {
               ? (isEn ? "Sending inquiry..." : "Enviando consulta...")
               : (isEn ? "Send Inquiry →" : "Enviar Consulta →")}
           </button>
+
+          <div style={{ textAlign: "center", marginTop: "0.5rem", fontSize: "0.85rem", color: "var(--muted)" }}>
+            {isEn ? "Or write directly to:" : "O escribinos directamente a:"}{" "}
+            <a
+              href="mailto:seleniadeveloper@gmail.com?subject=Consulta%20SSStudio"
+              style={{ color: "var(--accent)", fontWeight: 700, textDecoration: "underline" }}
+            >
+              seleniadeveloper@gmail.com
+            </a>
+          </div>
         </form>
       )}
     </div>
   );
 }
+
