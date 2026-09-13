@@ -28,6 +28,7 @@ export function ContactForm({ lang = "es" }: ContactFormProps) {
     setErrorMessage("");
 
     try {
+      // 1. Enviar vía API /contacto
       const res = await fetch("/api/contacto", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -41,7 +42,6 @@ export function ContactForm({ lang = "es" }: ContactFormProps) {
       }
 
       setStatus("success");
-      setFormData({ name: "", email: "", role: "", desc: "" });
     } catch (err: unknown) {
       setStatus("error");
       if (err instanceof Error) {
@@ -52,15 +52,21 @@ export function ContactForm({ lang = "es" }: ContactFormProps) {
     }
   };
 
+  const mailtoUrl = `mailto:seleniadeveloper@gmail.com?subject=${encodeURIComponent(
+    `📩 Consulta / Cita de ${formData.name || "Cliente"}`
+  )}&body=${encodeURIComponent(
+    `Nombre y Empresa: ${formData.name}\nEmail de contacto: ${formData.email}\nCargo: ${formData.role}\n\nConsulta:\n${formData.desc}`
+  )}`;
+
   return (
     <div style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #FAF5F1 100%)", border: "1.5px solid rgba(59, 24, 21, 0.14)", borderRadius: "24px", padding: "2.75rem", boxShadow: "0 20px 48px -10px rgba(59, 24, 21, 0.09), 0 4px 14px rgba(176, 83, 87, 0.04)" }}>
       <h2 style={{ fontSize: "1.35rem", fontWeight: 700, color: "var(--text)", marginBottom: "0.5rem" }}>
-        {isEn ? "Send a Direct Message" : "Enviar mensaje directo"}
+        {isEn ? "Send a Direct Message / Book Audit" : "Enviar mensaje o Agendar Cita"}
       </h2>
       <p style={{ fontSize: "0.9rem", color: "var(--muted)", marginBottom: "1.75rem" }}>
         {isEn
-          ? "Fill in your details to send a direct inquiry to our consulting team."
-          : "Completá tus datos para enviar tu consulta directamente a nuestro equipo."}
+          ? "Fill in your details to send a direct inquiry to seleniadeveloper@gmail.com."
+          : "Completá tus datos para enviar tu consulta o agendar tu sesión de consultoría."}
       </p>
 
       {status === "success" ? (
@@ -69,18 +75,32 @@ export function ContactForm({ lang = "es" }: ContactFormProps) {
             ✓
           </div>
           <h3 style={{ fontSize: "1.15rem", fontWeight: 700, color: "var(--text)", marginBottom: "0.5rem" }}>
-            {isEn ? "Inquiry Sent Successfully!" : "¡Consulta Enviada con Éxito!"}
+            {isEn ? "Inquiry Processed!" : "¡Consulta Procesada con Éxito!"}
           </h3>
-          <p style={{ fontSize: "0.95rem", color: "var(--text-body)", lineHeight: 1.5 }}>
+          <p style={{ fontSize: "0.95rem", color: "var(--text-body)", lineHeight: 1.5, marginBottom: "1.25rem" }}>
             {isEn
-              ? `Thank you! Your message has been routed to ${SITE.email}. We will reply within 24 business hours.`
-              : `¡Gracias! Tu mensaje ha sido enviado a ${SITE.email}. Te responderemos en menos de 24 horas hábiles.`}
+              ? `Your message is directed to ${SITE.email}. You can also open your mail app to confirm directly.`
+              : `Tu mensaje se ha derivado a ${SITE.email}. También podés enviarlo directamente desde tu cliente de correo:`}
           </p>
+
+          <a
+            href={mailtoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-primary"
+            style={{ display: "inline-flex", padding: "0.75rem 1.25rem", fontSize: "0.9rem", width: "100%", justifyContent: "center", marginBottom: "1rem" }}
+          >
+            ✉️ {isEn ? "Send via your Email App (Gmail/Mail)" : "Abrir y Enviar desde mi Email (Gmail/Mail)"}
+          </a>
+
           <button
             type="button"
-            onClick={() => setStatus("idle")}
+            onClick={() => {
+              setStatus("idle");
+              setFormData({ name: "", email: "", role: "", desc: "" });
+            }}
             className="btn btn-secondary"
-            style={{ marginTop: "1.25rem", padding: "0.6rem 1.25rem", fontSize: "0.85rem" }}
+            style={{ padding: "0.6rem 1.25rem", fontSize: "0.85rem" }}
           >
             {isEn ? "Send another message" : "Enviar otra consulta"}
           </button>
@@ -156,13 +176,13 @@ export function ContactForm({ lang = "es" }: ContactFormProps) {
           >
             {status === "loading"
               ? (isEn ? "Sending inquiry..." : "Enviando consulta...")
-              : (isEn ? "Send Inquiry →" : "Enviar Consulta →")}
+              : (isEn ? "Enviar Consulta / Programar Cita →" : "Enviar Consulta / Programar Cita →")}
           </button>
 
           <div style={{ textAlign: "center", marginTop: "0.5rem", fontSize: "0.85rem", color: "var(--muted)" }}>
             {isEn ? "Or write directly to:" : "O escribinos directamente a:"}{" "}
             <a
-              href="mailto:seleniadeveloper@gmail.com?subject=Consulta%20SSStudio"
+              href="mailto:seleniadeveloper@gmail.com?subject=Consulta%20o%20Cita%20SSStudio"
               style={{ color: "var(--accent)", fontWeight: 700, textDecoration: "underline" }}
             >
               seleniadeveloper@gmail.com
@@ -173,4 +193,5 @@ export function ContactForm({ lang = "es" }: ContactFormProps) {
     </div>
   );
 }
+
 
